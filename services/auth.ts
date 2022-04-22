@@ -9,6 +9,6 @@ const apiClient = axios.create({
 });
 
 export const authenticate = async (data: LoginDto) => {
-  const response = await apiClient.post<TokenResponse>("auth/login", data);
+  const response = await apiClient.post("auth/login", data);
   return response.data;
 };

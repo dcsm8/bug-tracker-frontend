@@ -4,19 +4,28 @@ import { Alert, AlertIcon, Button } from "@chakra-ui/react";
 import { authenticate } from "../../../services/auth";
 import { ShowIf } from "../../common/show-if/show-if";
 import { LoginDto, TokenResponse } from "./types";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
 
 function LoginForm() {
   const { register, handleSubmit } = useForm<LoginDto>();
-
-  const { isError, isLoading, mutate } = useMutation(authenticate, {
-    onSuccess: (data: TokenResponse) => {
-      // TODO: SAVE TOKEN and change route
-      console.log(data.accessToken);
-    },
-  });
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data: LoginDto) => {
-    mutate(data);
+    setLoading(true);
+    const res: any = await signIn("credentials", {
+      redirect: false,
+      username: data.username,
+      password: data.password,
+    });
+    setLoading(false);
+
+    if (res.error) {
+      setError(true);
+    } else {
+      setError(false);
+    }
   };
 
   return (
@@ -25,7 +34,7 @@ function LoginForm() {
       onSubmit={handleSubmit(onSubmit)}
     >
       <p className="text-lg font-medium">Log in to your account</p>
-      <ShowIf condition={isError}>
+      <ShowIf condition={error}>
         <Alert status="error">
           <AlertIcon />
           There was a problem with your login.
@@ -104,7 +113,7 @@ function LoginForm() {
         backgroundColor="#2563eb"
         textColor="#fff"
         isFullWidth
-        isLoading={isLoading}
+        isLoading={loading}
         colorScheme="blue"
         spinnerPlacement="start"
       >

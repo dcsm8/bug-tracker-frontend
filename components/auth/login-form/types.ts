@@ -1,6 +1,6 @@
 export interface LoginDto {
-  username: string;
-  password: string;
+  username: string | undefined;
+  password: string | undefined;
 }
 
 export interface TokenResponse {
