@@ -1,20 +1,36 @@
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
+import { Alert, AlertIcon, Button } from "@chakra-ui/react";
+import { authenticate } from "../../api/auth";
+import { ShowIf } from "../show-if/show-if";
 
 function LoginForm() {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
-  const onSubmit = (data: any) => console.log(data);
+  const { register, handleSubmit } = useForm();
+
+  const { isError, isLoading, mutateAsync } = useMutation(authenticate, {
+    onSuccess: (data: any) => {
+      // TODO: SAVE TOKEN and change route
+      console.log(data.accessToken);
+    },
+  });
+
+  const onSubmit = async (data: any) => {
+    mutateAsync(data);
+  };
 
   return (
     <form
       className="p-8 mt-6 mb-0 space-y-4 rounded-lg shadow-2xl"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <p className="text-lg font-medium">Sign in to your account</p>
+      <p className="text-lg font-medium">Log in to your account</p>
+      <ShowIf condition={isError}>
+        <Alert status="error">
+          <AlertIcon />
+          There was a problem with your login.
+        </Alert>
+      </ShowIf>
+
       <div>
         <label htmlFor="email" className="text-sm font-medium">
           Email
@@ -81,12 +97,18 @@ function LoginForm() {
           </span>
         </div>
       </div>
-      <button
+      <Button
         type="submit"
-        className="block w-full px-5 py-3 text-sm font-medium text-white bg-blue-600 rounded-lg"
+        _hover={{ bg: "#3b82f6" }}
+        backgroundColor="#2563eb"
+        textColor="#fff"
+        isFullWidth
+        isLoading={isLoading}
+        colorScheme="blue"
+        spinnerPlacement="start"
       >
-        Sign in
-      </button>
+        Log in
+      </Button>
       <p className="text-sm text-center text-gray-500">
         No account?
         <a className="ml-2 underline">Sign up</a>
