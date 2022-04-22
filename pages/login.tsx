@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Image from "next/image";
 import LoginForm from "../components/auth/login-form/login-form";
 
 const LoginPage: NextPage = () => {
@@ -18,10 +19,11 @@ const LoginPage: NextPage = () => {
       </div>
 
       <div className="relative w-full h-64 sm:h-96 lg:w-1/2 lg:h-full">
-        <img
-          className="absolute inset-0 object-cover w-full h-full"
+        <Image
+          alt="Mountains"
           src="https://images.unsplash.com/photo-1512273222628-4daea6e55abb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"
-          alt=""
+          layout="fill"
+          objectFit="cover"
         />
       </div>
     </section>
