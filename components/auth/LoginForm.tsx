@@ -1,8 +1,18 @@
+import { useForm } from "react-hook-form";
+
 function LoginForm() {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data: any) => console.log(data);
+
   return (
     <form
-      action="true"
       className="p-8 mt-6 mb-0 space-y-4 rounded-lg shadow-2xl"
+      onSubmit={handleSubmit(onSubmit)}
     >
       <p className="text-lg font-medium">Sign in to your account</p>
       <div>
@@ -15,6 +25,7 @@ function LoginForm() {
             id="email"
             className="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
             placeholder="Enter email"
+            {...register("email", { required: true })}
           />
           <span className="absolute inset-y-0 inline-flex items-center right-4">
             <svg
@@ -44,6 +55,7 @@ function LoginForm() {
             id="password"
             className="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
             placeholder="Enter password"
+            {...register("password", { required: true })}
           />
           <span className="absolute inset-y-0 inline-flex items-center right-4">
             <svg
