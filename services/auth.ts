@@ -1,4 +1,5 @@
 import axios from "axios";
+import { LoginDto, TokenResponse } from "../components/auth/login-form/types";
 
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -7,15 +8,7 @@ const apiClient = axios.create({
   },
 });
 
-export const authenticate = async (data: any) => {
-  const payload = {
-    username: data.email,
-    password: data.password,
-  };
-  const response = await apiClient.post<{ token: string }>(
-    "auth/login",
-    payload
-  );
-
+export const authenticate = async (data: LoginDto) => {
+  const response = await apiClient.post<TokenResponse>("auth/login", data);
   return response.data;
 };

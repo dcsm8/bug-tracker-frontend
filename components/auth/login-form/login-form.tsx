@@ -3,19 +3,20 @@ import { useMutation } from "react-query";
 import { Alert, AlertIcon, Button } from "@chakra-ui/react";
 import { authenticate } from "../../../services/auth";
 import { ShowIf } from "../../common/show-if/show-if";
+import { LoginDto, TokenResponse } from "./types";
 
 function LoginForm() {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<LoginDto>();
 
-  const { isError, isLoading, mutateAsync } = useMutation(authenticate, {
-    onSuccess: (data: any) => {
+  const { isError, isLoading, mutate } = useMutation(authenticate, {
+    onSuccess: (data: TokenResponse) => {
       // TODO: SAVE TOKEN and change route
       console.log(data.accessToken);
     },
   });
 
-  const onSubmit = async (data: any) => {
-    mutateAsync(data);
+  const onSubmit = async (data: LoginDto) => {
+    mutate(data);
   };
 
   return (
@@ -41,7 +42,7 @@ function LoginForm() {
             id="email"
             className="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
             placeholder="Enter email"
-            {...register("email", { required: true })}
+            {...register("username", { required: true })}
           />
           <span className="absolute inset-y-0 inline-flex items-center right-4">
             <svg
