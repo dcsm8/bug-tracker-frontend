@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { Alert, AlertIcon, Button } from "@chakra-ui/react";
-import { authenticate } from "../../api/auth";
-import { ShowIf } from "../show-if/show-if";
+import { authenticate } from "../../../services/auth";
+import { ShowIf } from "../../common/show-if/show-if";
 
 function LoginForm() {
   const { register, handleSubmit } = useForm();

@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
-import LoginForm from "../components/auth/LoginForm";
+import LoginForm from "../components/auth/login-form/login-form";
 
-const Login: NextPage = () => {
+const LoginPage: NextPage = () => {
   return (
     <section className="relative flex flex-wrap lg:h-screen lg:items-center">
       <div className="max-w-screen-xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
@@ -28,4 +28,4 @@ const Login: NextPage = () => {
   );
 };
 
-export default Login;
+export default LoginPage;
