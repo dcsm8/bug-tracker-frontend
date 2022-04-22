@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Image from "next/image";
 import LoginForm from "../components/auth/login-form/login-form";
+import { Logo } from "../components/common/logo/logo";
 
 const LoginPage: NextPage = () => {
   return (
@@ -10,7 +11,7 @@ const LoginPage: NextPage = () => {
           <h1 className="text-2xl font-bold text-center text-blue-600 sm:text-3xl">
             Bug Tracker
           </h1>
-          <p className="max-w-md mx-auto mt-4 text-center text-gray-500">
+          <p className="max-w-md mx-auto mt-4 text-center text-gray-600">
             Record, report, and monitor the bugs in a software development
             project
           </p>
