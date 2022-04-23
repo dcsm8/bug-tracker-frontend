@@ -1,16 +1,16 @@
 import { useForm } from "react-hook-form";
-import { useMutation } from "react-query";
 import { Alert, AlertIcon, Button } from "@chakra-ui/react";
-import { authenticate } from "../../../services/auth";
 import { ShowIf } from "../../common/show-if/show-if";
-import { LoginDto, TokenResponse } from "./types";
+import { LoginDto } from "./types";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 function LoginForm() {
   const { register, handleSubmit } = useForm<LoginDto>();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const onSubmit = async (data: LoginDto) => {
     setLoading(true);
@@ -18,6 +18,7 @@ function LoginForm() {
       redirect: false,
       username: data.username,
       password: data.password,
+      callbackUrl: "/dashboard",
     });
     setLoading(false);
 
@@ -26,6 +27,8 @@ function LoginForm() {
     } else {
       setError(false);
     }
+
+    if (res.url) router.push(res.url);
   };
 
   return (
