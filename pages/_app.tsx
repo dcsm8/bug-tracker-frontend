@@ -5,6 +5,14 @@ import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { SessionProvider } from "next-auth/react";
 import React from "react";
+import theme from "../styles/theme";
+import "@fontsource/nunito-sans/200.css";
+import "@fontsource/nunito-sans/300.css";
+import "@fontsource/nunito-sans/400.css";
+import "@fontsource/nunito-sans/600.css";
+import "@fontsource/nunito-sans/700.css";
+import "@fontsource/nunito-sans/800.css";
+import "@fontsource/nunito-sans/900.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
@@ -12,7 +20,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider session={pageProps.session}>
       <QueryClientProvider client={queryClient}>
-        <ChakraProvider>
+        <ChakraProvider theme={theme}>
           <Component {...pageProps} />
           <ReactQueryDevtools initialIsOpen={false} />
         </ChakraProvider>
