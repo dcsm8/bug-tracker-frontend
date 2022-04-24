@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Logo } from "../../common/logo/logo";
 
 export const Sidebar = (props: any) => (
   <div className="relative bg-[#f5f5f5] dark:bg-gray-800 inset-y-0 z-10 flex flex-col flex-shrink-0 w-80 max-h-screen overflow-hidden">
