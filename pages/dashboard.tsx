@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import { getSession } from "next-auth/react";
 import { Header } from "../components/dashboard/header/header";
 import { Sidebar } from "../components/dashboard/sidebar/sidebar";
+import { TopMenu } from "../components/dashboard/top-menu/top-menu";
 
 const Home: NextPage = () => {
   return (
@@ -9,6 +10,7 @@ const Home: NextPage = () => {
       <Sidebar />
       <div className="flex flex-col flex-grow w-screen">
         <Header />
+        <TopMenu />
       </div>
     </div>
   );
