@@ -1,15 +1,21 @@
 import React from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import SidebarWithHeader from "./views/dashboard/dashboard-page/dashboard-page";
+import LoginPage from "./views/login/login-page/login-page";
 
-function App() {
+export default function App() {
   return (
-    <div className="flex h-screen items-center justify-center">
-      <div className="m-auto flex w-full max-w-md flex-col rounded-lg bg-white px-4 py-8 shadow dark:bg-gray-800 sm:px-6 md:px-8 lg:px-10">
-        <div className="flex w-full justify-center text-2xl font-bold text-gray-800">
-          <h1>Bug Tracker</h1>
-        </div>
+    <Router>
+      <div>
+        <Switch>
+          <Route path="/app">
+            <SidebarWithHeader />
+          </Route>
+          <Route path="/">
+            <LoginPage />
+          </Route>
+        </Switch>
       </div>
-    </div>
+    </Router>
   );
 }
-
-export default App;

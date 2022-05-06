@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Alert, AlertIcon, Button } from "@chakra-ui/react";
-import { ShowIf } from "../../common/show-if/show-if";
+import { ShowIf } from "../../../components/common/show-if/show-if";
 import { LoginDto } from "./types";
 import { useState } from "react";
 
