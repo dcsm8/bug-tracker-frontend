@@ -1,37 +1,26 @@
 {
-  "name": "bug-tracker-frontend",
-  "version": "0.1.0",
-  "private": true,
+  "name": "template-vite-react-tailwind-v3",
+  "version": "0.0.0",
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.8.8",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
-    "@fontsource/nunito-sans": "^4.5.6",
-    "axios": "^0.26.1",
-    "framer-motion": "^6.3.0",
-    "next": "12.1.5",
-    "next-auth": "^4.3.3",
-    "react": "18.0.0",
-    "react-dom": "18.0.0",
-    "react-hook-form": "^7.30.0",
-    "react-query": "^3.37.0"
+    "axios": "^0.27.2",
+    "framer-motion": "^6.3.3",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-hook-form": "^7.30.0"
   },
   "devDependencies": {
-    "@types/node": "17.0.24",
-    "@types/react": "18.0.5",
-    "@types/react-dom": "18.0.1",
-    "autoprefixer": "^10.4.4",
-    "cross-env": "^7.0.3",
-    "eslint": "8.13.0",
-    "eslint-config-next": "12.1.5",
-    "postcss": "^8.4.12",
-    "tailwindcss": "^3.0.24",
-    "typescript": "4.6.3"
+    "@vitejs/plugin-react": "^1.0.7",
+    "prettier": "^2.5.1",
+    "prettier-plugin-tailwindcss": "^0.1.5",
+    "vitawind": "^2.2.4",
+    "vite": "^2.7.2"
   }
 }

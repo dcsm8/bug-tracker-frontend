@@ -2,38 +2,20 @@ import { useForm } from "react-hook-form";
 import { Alert, AlertIcon, Button } from "@chakra-ui/react";
 import { ShowIf } from "../../common/show-if/show-if";
 import { LoginDto } from "./types";
-import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { useRouter } from "next/router";
 
 function LoginForm() {
   const { register, handleSubmit } = useForm<LoginDto>();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const onSubmit = async (data: LoginDto) => {
-    setLoading(true);
-    const res: any = await signIn("credentials", {
-      redirect: false,
-      username: data.username,
-      password: data.password,
-      callbackUrl: "/dashboard",
-    });
-    setLoading(false);
-
-    if (res.error) {
-      setError(true);
-    } else {
-      setError(false);
-    }
-
-    if (res.url) router.push(res.url);
+    console.log(data);
   };
 
   return (
     <form
-      className="p-8 mt-6 mb-0 space-y-4 rounded-lg shadow-2xl"
+      className="mt-6 mb-0 space-y-4 rounded-lg p-8 shadow-2xl"
       onSubmit={handleSubmit(onSubmit)}
     >
       <p className="text-lg font-medium">Log in to your account</p>
@@ -52,14 +34,14 @@ function LoginForm() {
           <input
             type="email"
             id="email"
-            className="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
+            className="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm"
             placeholder="Enter email"
             {...register("username", { required: true })}
           />
-          <span className="absolute inset-y-0 inline-flex items-center right-4">
+          <span className="absolute inset-y-0 right-4 inline-flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-5 h-5 text-gray-400"
+              className="h-5 w-5 text-gray-400"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -82,14 +64,14 @@ function LoginForm() {
           <input
             type="password"
             id="password"
-            className="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
+            className="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm"
             placeholder="Enter password"
             {...register("password", { required: true })}
           />
-          <span className="absolute inset-y-0 inline-flex items-center right-4">
+          <span className="absolute inset-y-0 right-4 inline-flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-5 h-5 text-gray-400"
+              className="h-5 w-5 text-gray-400"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -122,7 +104,7 @@ function LoginForm() {
       >
         Log in
       </Button>
-      <p className="text-sm text-center text-gray-500">
+      <p className="text-center text-sm text-gray-500">
         No account?
         <a className="ml-2 underline">Sign up</a>
       </p>
