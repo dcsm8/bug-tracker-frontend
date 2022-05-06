@@ -1,7 +1,8 @@
 # template-vite-react-tailwind-v3
 
-- **template of:** vite + react
-- **tailwindcss:** v3.x
+https://app.netlify.com/sites/bug-tracker-frontend/
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/d3ee9899-0cc5-4228-bb8f-19e1cec1e861/deploy-status)](https://app.netlify.com/sites/bug-tracker-frontend/deploys)
 
 ## Started
 
