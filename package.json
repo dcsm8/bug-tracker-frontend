@@ -20,10 +20,12 @@
     "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
+    "@types/react": "^17.0.45",
     "@vitejs/plugin-react": "^1.0.7",
     "prettier": "^2.5.1",
     "prettier-plugin-tailwindcss": "^0.1.5",
     "vitawind": "^2.2.4",
-    "vite": "^2.7.2"
+    "vite": "^2.7.2",
+    "vite-plugin-eslint": "^1.6.0"
   }
 }
