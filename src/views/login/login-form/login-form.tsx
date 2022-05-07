@@ -17,9 +17,8 @@ function LoginForm() {
   const { register, handleSubmit } = useForm<LoginDto>();
   const { isLoading, isError, mutate } = useMutation(authenticate);
 
-  const onSubmit = async (data: LoginDto) => {
-    console.log(data);
-    await mutate(data);
+  const onSubmit = (data: LoginDto) => {
+    mutate(data);
   };
 
   return (

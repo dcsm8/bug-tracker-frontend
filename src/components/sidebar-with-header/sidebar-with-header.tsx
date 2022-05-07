@@ -32,7 +32,7 @@ import {
   FiChevronDown,
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
-import { Logo } from '../../../components/common/logo/logo';
+import { Logo } from '../common/logo/logo';
 
 interface LinkItemProps {
   name: string;
@@ -46,11 +46,7 @@ const LinkItems: Array<LinkItemProps> = [
   { name: 'Settings', icon: FiSettings },
 ];
 
-export default function SidebarWithHeader({
-  children,
-}: {
-  children: JSX.Element;
-}) {
+export const SidebarWithHeader = ({ children }: { children: JSX.Element }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box minH='100vh' bg={useColorModeValue('gray.100', 'gray.900')}>
@@ -78,7 +74,7 @@ export default function SidebarWithHeader({
       </Box>
     </Box>
   );
-}
+};
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;

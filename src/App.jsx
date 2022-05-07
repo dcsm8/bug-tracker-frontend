@@ -1,37 +1,32 @@
+import { Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import SidebarWithHeader from './views/dashboard/dashboard-page/dashboard-page';
+import Home from './views/dashboard/home';
+import User from './views/dashboard/user';
 import LoginPage from './views/login/login-page/login-page';
+import PublicRoute from './components/routing/public-route/public-route';
+import PrivateRoute from './components/routing/private-route/private-route';
+import { SidebarWithHeader } from './components/sidebar-with-header/sidebar-with-header';
+import { Spinner } from '@chakra-ui/react';
+import NoFound from './views/no-found/no-found';
 
-export default function App() {
+const App = () => {
   return (
     <Router>
-      <div>
+      <Suspense fallback={<Spinner />}>
         <Switch>
-          <Route path='/app'>
-            <SidebarWithHeader>
-              <Switch>
-                <Route exact path='/app/home'>
-                  <Home />
-                </Route>
-                <Route exact path='/app/about'>
-                  <About />
-                </Route>
-              </Switch>
-            </SidebarWithHeader>
-          </Route>
-          <Route exact path='/'>
-            <LoginPage />
-          </Route>
+          <PublicRoute path='/' restricted component={LoginPage} exact />
+          <PublicRoute path='/login' restricted component={LoginPage} exact />
+          <SidebarWithHeader>
+            <Switch>
+              <PrivateRoute path='/dashboard' component={Home} exact />
+              <PrivateRoute path='/dashboard/user' component={User} exact />
+              <PrivateRoute path='*' component={NoFound} />
+            </Switch>
+          </SidebarWithHeader>
         </Switch>
-      </div>
+      </Suspense>
     </Router>
   );
-}
+};
 
-function Home() {
-  return <h2>Home</h2>;
-}
-
-function About() {
-  return <h2>About</h2>;
-}
+export default App;
