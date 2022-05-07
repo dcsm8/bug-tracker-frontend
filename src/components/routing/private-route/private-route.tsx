@@ -1,6 +1,6 @@
 import { ComponentClass } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { isLogin } from '../../../utils/isLogin';
+import { isLogin } from '../../../utils/local-storage';
 
 type PrivateRouteProps = { component: ComponentClass };
 

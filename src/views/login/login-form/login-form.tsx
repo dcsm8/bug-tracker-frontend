@@ -12,10 +12,18 @@ import { ShowIf } from '../../../components/common/show-if/show-if';
 import { LoginDto } from './types';
 import { useMutation } from 'react-query';
 import { authenticate } from '../../../services/login-service';
+import { saveToken } from '../../../utils/local-storage';
+import { useHistory } from 'react-router-dom';
 
 function LoginForm() {
+  const history = useHistory();
   const { register, handleSubmit } = useForm<LoginDto>();
-  const { isLoading, isError, mutate } = useMutation(authenticate);
+  const { isLoading, isError, mutate } = useMutation(authenticate, {
+    onSuccess: (data, variables, context) => {
+      saveToken(data.accessToken);
+      history.push('/dashboard');
+    },
+  });
 
   const onSubmit = (data: LoginDto) => {
     mutate(data);
