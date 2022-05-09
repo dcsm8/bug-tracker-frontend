@@ -14,7 +14,6 @@ const App = () => {
     <Router>
       <Suspense fallback={<Spinner />}>
         <Switch>
-          <PublicRoute path='/' restricted component={LoginPage} exact />
           <PublicRoute path='/login' restricted component={LoginPage} exact />
           <SidebarWithHeader>
             <Switch>
