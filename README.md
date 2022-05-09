@@ -1,6 +1,7 @@
 # template-vite-react-tailwind-v3
 
 https://app.netlify.com/sites/bug-tracker-frontend/
+https://bug-tracker-frontend.netlify.app
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/d3ee9899-0cc5-4228-bb8f-19e1cec1e861/deploy-status)](https://app.netlify.com/sites/bug-tracker-frontend/deploys)
 
