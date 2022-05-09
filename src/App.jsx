@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Home from './views/dashboard/home';
+import Home from './views/dashboard/home-page/home-page';
 import User from './views/dashboard/user';
 import LoginPage from './views/login/login-page/login-page';
 import PublicRoute from './components/routing/public-route/public-route';
