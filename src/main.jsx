@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { ChakraProvider, CSSReset } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { UserProvider } from './store/use-user';
 
 const queryClient = new QueryClient();
 
@@ -11,8 +12,9 @@ ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <ChakraProvider>
-        <CSSReset />
-        <App />
+        <UserProvider>
+          <App />
+        </UserProvider>
       </ChakraProvider>
     </QueryClientProvider>
   </React.StrictMode>,

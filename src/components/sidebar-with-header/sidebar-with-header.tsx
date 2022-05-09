@@ -34,8 +34,8 @@ import {
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import { Logo } from '../common/logo/logo';
-import { logout } from '../../utils/local-storage';
 import { useHistory } from 'react-router-dom';
+import { useUser } from '../../store/use-user';
 
 interface LinkItemProps {
   name: string;
@@ -159,6 +159,7 @@ interface MobileProps extends FlexProps {
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const history = useHistory();
+  const { setAccessToken } = useUser();
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -235,7 +236,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <MenuDivider />
               <MenuItem
                 onClick={() => {
-                  logout();
+                  setAccessToken(null);
                   history.push('/');
                 }}
               >
