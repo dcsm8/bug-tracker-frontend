@@ -8,7 +8,6 @@ import {
   VStack,
   Icon,
   useColorModeValue,
-  Link,
   Drawer,
   DrawerContent,
   Text,
@@ -33,9 +32,9 @@ import {
   FiChevronDown,
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
-import { Logo } from '../common/logo/logo';
 import { useHistory } from 'react-router-dom';
-import { useUser } from '../../store/use-user';
+import { Logo } from '@components/common/logo/logo';
+import { useUser } from '@store/use-user';
 
 interface LinkItemProps {
   name: string;

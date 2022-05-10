@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { parseJwt } from '../utils/local-storage';
+import { parseJwt } from '@utils/local-storage';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const getCurrentUser = (accessToken) => {
   return parseJwt(accessToken);

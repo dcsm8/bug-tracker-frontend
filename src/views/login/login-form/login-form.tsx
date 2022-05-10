@@ -8,12 +8,12 @@ import {
   Input,
   Stack,
 } from '@chakra-ui/react';
-import { ShowIf } from '../../../components/common/show-if/show-if';
 import { LoginDto } from './types';
 import { useMutation } from 'react-query';
-import { authenticate } from '../../../services/login-service';
 import { useHistory } from 'react-router-dom';
-import { useUser } from '../../../store/use-user';
+import { authenticate } from '@services/login-service';
+import { ShowIf } from '@components/common/show-if/show-if';
+import { useUser } from '@store/use-user';
 
 function LoginForm() {
   const history = useHistory();

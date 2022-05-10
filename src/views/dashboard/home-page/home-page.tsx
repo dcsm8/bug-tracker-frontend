@@ -1,8 +1,8 @@
 import Board from '@asseinfo/react-kanban';
 import '@asseinfo/react-kanban/dist/styles.css';
 import { Alert, AlertIcon, Spinner } from '@chakra-ui/react';
+import { findAll } from '@services/tasks-service';
 import { useQuery } from 'react-query';
-import { findAll } from '../../../services/tasks-service';
 
 const Home = () => {
   const { isLoading, data, isError } = useQuery('findAllTasks', findAll);
