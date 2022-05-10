@@ -1,8 +1,12 @@
 import { isLogin } from '@utils/local-storage';
-import { ComponentClass } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, RouteComponentProps } from 'react-router-dom';
 
-type PublicRouteProps = { component: ComponentClass; restricted: boolean };
+type PublicRouteProps = {
+  component: React.ComponentType<RouteComponentProps>;
+  path: string;
+  restricted?: boolean;
+  exact?: boolean;
+};
 
 const PublicRoute = ({
   component: Component,
