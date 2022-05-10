@@ -1,13 +1,12 @@
+import { Spinner } from '@chakra-ui/react';
+import PrivateRoute from '@components/routing/private-route/private-route';
+import PublicRoute from '@components/routing/public-route/public-route';
+import { SidebarWithHeader } from '@components/sidebar-with-header/sidebar-with-header';
+import Home from '@views/dashboard/home-page/home-page';
+import User from '@views/dashboard/user';
+import LoginPage from '@views/login/login-page/login-page';
 import { Suspense } from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
-import Home from './views/dashboard/home-page/home-page';
-import User from './views/dashboard/user';
-import LoginPage from './views/login/login-page/login-page';
-import PublicRoute from './components/routing/public-route/public-route';
-import PrivateRoute from './components/routing/private-route/private-route';
-import { SidebarWithHeader } from './components/sidebar-with-header/sidebar-with-header';
-import { Spinner } from '@chakra-ui/react';
-import NoFound from './views/no-found/no-found';
 
 const App = () => {
   return (
