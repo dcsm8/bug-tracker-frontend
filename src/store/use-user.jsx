@@ -1,12 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-
-const parseJwt = (token) => {
-  try {
-    return JSON.parse(atob(token.split('.')[1]));
-  } catch (e) {
-    return null;
-  }
-};
+import { parseJwt } from '../utils/local-storage';
 
 const getCurrentUser = (accessToken) => {
   return parseJwt(accessToken);
