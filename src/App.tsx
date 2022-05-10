@@ -5,6 +5,7 @@ import { SidebarWithHeader } from '@components/sidebar-with-header/sidebar-with-
 import Home from '@views/dashboard/home-page/home-page';
 import User from '@views/dashboard/user';
 import LoginPage from '@views/login/login-page/login-page';
+import NotFound from '@views/no-found/no-found';
 import { Suspense } from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 
@@ -19,7 +20,7 @@ const App = () => {
             <Switch>
               <PrivateRoute path='/dashboard' component={Home} exact />
               <PrivateRoute path='/dashboard/user' component={User} exact />
-              <PrivateRoute path='*' component={NoFound} />
+              <PrivateRoute path='*' component={NotFound} />
             </Switch>
           </SidebarWithHeader>
         </Switch>
