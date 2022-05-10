@@ -12,7 +12,7 @@ import { LoginDto } from './types';
 import { useMutation } from 'react-query';
 import { useHistory } from 'react-router-dom';
 import { authenticate } from '@services/login-service';
-import { ShowIf } from '@components/common/show-if/show-if';
+import { ShowIf } from '@components/show-if/show-if';
 import { useUser } from '@store/use-user';
 
 function LoginForm() {

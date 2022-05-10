@@ -33,7 +33,7 @@ import {
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import { useHistory } from 'react-router-dom';
-import { Logo } from '@components/common/logo/logo';
+import { Logo } from '@components/logo/logo';
 import { useUser } from '@store/use-user';
 
 interface LinkItemProps {
