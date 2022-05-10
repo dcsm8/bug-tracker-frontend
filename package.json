@@ -30,6 +30,7 @@
     "prettier-plugin-tailwindcss": "^0.1.5",
     "vitawind": "^2.2.4",
     "vite": "^2.7.2",
+    "vite-aliases": "^0.9.2",
     "vite-plugin-eslint": "^1.6.0"
   }
 }
