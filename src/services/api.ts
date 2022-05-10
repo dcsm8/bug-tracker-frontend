@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { parseJwt } from 'utils/local-storage';
 
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,

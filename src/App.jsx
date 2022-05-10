@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import Home from './views/dashboard/home-page/home-page';
 import User from './views/dashboard/user';
 import LoginPage from './views/login/login-page/login-page';
