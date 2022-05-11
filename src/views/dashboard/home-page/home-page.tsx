@@ -16,7 +16,19 @@ const Home = () => {
       </Alert>
     );
 
-  return <Board initialBoard={data} />;
+  return (
+    <Board
+      initialBoard={data}
+      allowAddCard
+      disableColumnDrag
+      onCardDragEnd={(board, card, source, destination) => {
+        console.log(card);
+        console.log(board);
+        console.log(destination);
+        console.log(source);
+      }}
+    />
+  );
 };
 
 export default Home;
