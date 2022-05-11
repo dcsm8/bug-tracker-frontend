@@ -1,11 +1,33 @@
 import { Board, Card, Column } from '@interfaces/board-interface';
 import { StatusType, Task } from '@interfaces/task-interface';
-import { v4 as uuid } from 'uuid';
 import { apiClient } from './api';
 
 export const findAll = async (): Promise<Board> => {
   const response = await apiClient.get<Task[]>('/tasks');
   return createBoard(response.data);
+};
+
+export const findOne = async (id: number): Promise<Task> => {
+  const response = await apiClient.get<Task>(`/tasks/${id}`);
+  return response.data;
+};
+
+export const create = async (task: Partial<Task>): Promise<Task> => {
+  const response = await apiClient.post<Task>('/tasks', task);
+  return response.data;
+};
+
+export const remove = async (id: number): Promise<Task> => {
+  const response = await apiClient.delete<Task>(`/tasks/${id}`);
+  return response.data;
+};
+
+export const update = async (
+  task: Partial<Task>,
+  id: number,
+): Promise<Task> => {
+  const response = await apiClient.patch<Task>(`/tasks/${id}`, task);
+  return response.data;
 };
 
 const createBoard = (tasks: Task[]): Board => {
@@ -16,9 +38,9 @@ const createBoard = (tasks: Task[]): Board => {
 
   tasks.forEach((task) => {
     const card: Card = {
-      id: uuid(),
+      id: task.id,
       title: task.title,
-      description: task.shortDescription,
+      shortDescription: task.shortDescription,
     };
 
     switch (task.status) {

@@ -11,5 +11,5 @@ export interface Column {
 export interface Card {
   id: number | string;
   title: string;
-  description: string;
+  shortDescription: string;
 }
