@@ -1,11 +1,18 @@
 import Board from '@asseinfo/react-kanban';
 import '@asseinfo/react-kanban/dist/styles.css';
 import { Alert, AlertIcon, Box, Flex, Spinner, Text } from '@chakra-ui/react';
-import { findAll } from '@services/tasks-service';
-import { useQuery } from 'react-query';
+import { Task } from '@interfaces/task-interface';
+import { findAll, update } from '@services/tasks-service';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const Home = () => {
+  const queryClient = useQueryClient();
   const { isLoading, data, isError } = useQuery(['tasks'], findAll);
+  const { mutateAsync } = useMutation(['tasks'], update, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['tasks']);
+    },
+  });
 
   if (isLoading) return <Spinner />;
   if (isError)
@@ -21,11 +28,12 @@ const Home = () => {
       initialBoard={data}
       allowAddCard
       disableColumnDrag
-      onCardDragEnd={(board, card, source, destination) => {
-        console.log(card);
-        console.log(board);
-        console.log(destination);
-        console.log(source);
+      onCardDragEnd={async (board, card, source, destination) => {
+        const updatedTask: Partial<Task> = {
+          id: card.id,
+          status: destination.toColumnId,
+        };
+        await mutateAsync(updatedTask);
       }}
       renderCard={({ title, shortDescription }, { removeCard, dragging }) => (
         <Flex

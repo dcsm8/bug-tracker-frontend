@@ -22,11 +22,8 @@ export const remove = async (id: number): Promise<Task> => {
   return response.data;
 };
 
-export const update = async (
-  task: Partial<Task>,
-  id: number,
-): Promise<Task> => {
-  const response = await apiClient.patch<Task>(`/tasks/${id}`, task);
+export const update = async (task: Partial<Task>): Promise<Task> => {
+  const response = await apiClient.patch<Task>(`/tasks/${task.id}`, task);
   return response.data;
 };
 
