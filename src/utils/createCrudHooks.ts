@@ -48,3 +48,13 @@ export default function createCrudHooks({
 
   return [useIndex, useSingle, useCreate, useUpdate, useDelete];
 }
+
+// const [useTodos, useTodo, useCreateTodo, useUpdateTodo, useDeleteTodo] =
+//   createCrudHooks({
+//     baseKey: 'todos',
+//     indexFn: () => axios.get('/todos'),
+//     singleFn: (id) => axios.get(`/todos/${id}`),
+//     createFn: (payload) => axios.post(`/todos`, payload),
+//     updateFn: (payload) => axios.patch(`/todos/${payload.id}`, payload),
+//     deleteFn: (id) => axios.delet(`/todos/${id}`),
+//   });
