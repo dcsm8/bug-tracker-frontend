@@ -28,10 +28,17 @@ const Home = () => {
         console.log(source);
       }}
       renderCard={({ title, shortDescription }, { removeCard, dragging }) => (
-        <Box dragging={dragging} bgColor='blackAlpha.100'>
+        <Flex
+          mt='10px'
+          dragging={dragging}
+          flexDirection='column'
+          p='25px'
+          borderRadius='15px'
+          w='270px'
+        >
           <Text fontSize='md'>{title}</Text>
           <Text fontSize='md'>{shortDescription}</Text>
-        </Box>
+        </Flex>
       )}
     />
   );

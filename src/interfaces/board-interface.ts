@@ -1,3 +1,4 @@
+import { Task } from 'interfaces/task-interface';
 export interface Board {
   columns: Column[];
 }
@@ -5,11 +6,5 @@ export interface Board {
 export interface Column {
   id: number | string;
   title: string;
-  cards: Card[];
-}
-
-export interface Card {
-  id: number | string;
-  title: string;
-  shortDescription: string;
+  cards: Task[];
 }

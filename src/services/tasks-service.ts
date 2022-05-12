@@ -1,4 +1,4 @@
-import { Board, Card, Column } from '@interfaces/board-interface';
+import { Board, Column } from '@interfaces/board-interface';
 import { StatusType, Task } from '@interfaces/task-interface';
 import { apiClient } from './api';
 
@@ -31,55 +31,49 @@ export const update = async (
 };
 
 const createBoard = (tasks: Task[]): Board => {
-  const backlogCards: Card[] = [];
-  const inProgressCards: Card[] = [];
-  const testingCards: Card[] = [];
-  const completeCards: Card[] = [];
+  const backlogTasks: Task[] = [];
+  const inProgressTasks: Task[] = [];
+  const testingTasks: Task[] = [];
+  const completeTasks: Task[] = [];
 
   tasks.forEach((task) => {
-    const card: Card = {
-      id: task.id,
-      title: task.title,
-      shortDescription: task.shortDescription,
-    };
-
     switch (task.status) {
       case StatusType.BACKLOG:
-        backlogCards.push(card);
+        backlogTasks.push(task);
         break;
       case StatusType.IN_PROGRESS:
-        inProgressCards.push(card);
+        inProgressTasks.push(task);
         break;
       case StatusType.TESTING:
-        testingCards.push(card);
+        testingTasks.push(task);
         break;
       case StatusType.COMPLETE:
-        completeCards.push(card);
+        completeTasks.push(task);
         break;
     }
   });
 
   const backlogColumn: Column = {
     id: StatusType.BACKLOG,
-    cards: backlogCards,
+    cards: backlogTasks,
     title: 'Backlog',
   };
 
   const inProgressColumn: Column = {
     id: StatusType.IN_PROGRESS,
-    cards: inProgressCards,
+    cards: inProgressTasks,
     title: 'In Progress',
   };
 
   const testingColumn: Column = {
     id: StatusType.TESTING,
-    cards: testingCards,
+    cards: testingTasks,
     title: 'Testing',
   };
 
   const completeColumn: Column = {
     id: StatusType.COMPLETE,
-    cards: completeCards,
+    cards: completeTasks,
     title: 'Complete',
   };
 
