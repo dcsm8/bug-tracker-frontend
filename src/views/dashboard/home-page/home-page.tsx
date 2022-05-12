@@ -2,13 +2,19 @@ import Board from '@asseinfo/react-kanban';
 import '@asseinfo/react-kanban/dist/styles.css';
 import { Alert, AlertIcon, Box, Flex, Spinner, Text } from '@chakra-ui/react';
 import { Task } from '@interfaces/task-interface';
-import { findAll, update } from '@services/tasks-service';
+import { create, findAll, update } from '@services/tasks-service';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const Home = () => {
   const queryClient = useQueryClient();
   const { isLoading, data, isError } = useQuery(['tasks'], findAll);
-  const { mutateAsync } = useMutation(['tasks'], update, {
+  const { mutateAsync: updateTask } = useMutation(update, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['tasks']);
+    },
+  });
+
+  const { mutateAsync: createTask } = useMutation(create, {
     onSuccess: () => {
       queryClient.invalidateQueries(['tasks']);
     },
@@ -33,7 +39,7 @@ const Home = () => {
           id: card.id,
           status: destination.toColumnId,
         };
-        await mutateAsync(updatedTask);
+        await updateTask(updatedTask);
       }}
       renderCard={({ title, shortDescription }, { removeCard, dragging }) => (
         <Flex

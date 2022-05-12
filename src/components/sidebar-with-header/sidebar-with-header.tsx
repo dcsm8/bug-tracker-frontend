@@ -19,6 +19,7 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  Button,
 } from '@chakra-ui/react';
 import { NavLink } from 'react-router-dom';
 import {
@@ -30,6 +31,7 @@ import {
   FiMenu,
   FiBell,
   FiChevronDown,
+  FiPlus,
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import { useHistory } from 'react-router-dom';
@@ -189,6 +191,14 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       </Text>
 
       <HStack spacing={{ base: '0', md: '6' }}>
+        <Button
+          leftIcon={<Icon as={FiPlus} color='white' />}
+          colorScheme='teal'
+          variant='solid'
+        >
+          Create Task
+        </Button>
+
         <IconButton
           size='lg'
           variant='ghost'
