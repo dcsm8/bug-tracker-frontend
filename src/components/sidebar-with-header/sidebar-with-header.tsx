@@ -37,6 +37,7 @@ import { IconType } from 'react-icons';
 import { useHistory } from 'react-router-dom';
 import { Logo } from '@components/logo/logo';
 import { useUser } from '@store/use-user';
+import { CreateTask } from '@components/task/create-task/create-task';
 
 interface LinkItemProps {
   name: string;
@@ -160,6 +161,8 @@ interface MobileProps extends FlexProps {
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const history = useHistory();
+  const { isOpen, onOpen: OnOpenCreateTask, onClose } = useDisclosure();
+
   const { setAccessToken } = useUser();
   return (
     <Flex
@@ -195,10 +198,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
           leftIcon={<Icon as={FiPlus} color='white' />}
           colorScheme='teal'
           variant='solid'
+          onClick={OnOpenCreateTask}
         >
           Create Task
         </Button>
-
+        <CreateTask isOpen={isOpen} onClose={onClose} />
         <IconButton
           size='lg'
           variant='ghost'
