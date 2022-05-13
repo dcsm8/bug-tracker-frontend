@@ -2,19 +2,13 @@ import Board from '@asseinfo/react-kanban';
 import '@asseinfo/react-kanban/dist/styles.css';
 import { Alert, AlertIcon, Box, Flex, Spinner, Text } from '@chakra-ui/react';
 import { Task } from '@interfaces/task-interface';
-import { create, findAll, update } from '@services/tasks-service';
+import { findAll, update } from '@services/tasks-service';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const Home = () => {
   const queryClient = useQueryClient();
   const { isLoading, data, isError } = useQuery(['tasks'], findAll);
   const { mutateAsync: updateTask } = useMutation(update, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['tasks']);
-    },
-  });
-
-  const { mutateAsync: createTask } = useMutation(create, {
     onSuccess: () => {
       queryClient.invalidateQueries(['tasks']);
     },

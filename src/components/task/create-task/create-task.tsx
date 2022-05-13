@@ -13,15 +13,20 @@ import {
   Select,
   Textarea,
   DrawerFooter,
-  Icon,
+  FormControl,
 } from '@chakra-ui/react';
 import {
   CategoryType,
+  NotificationStatusType,
   PriorityType,
   ReproducibleType,
+  StatusType,
 } from '@interfaces/task-interface';
+import { create } from '@services/tasks-service';
 import { replaceUnderscores } from '@utils/text-pipes';
 import React from 'react';
+import { useForm } from 'react-hook-form';
+import { useMutation, useQueryClient } from 'react-query';
 
 type CreateTaskProps = {
   isOpen: boolean;
@@ -30,6 +35,24 @@ type CreateTaskProps = {
 
 export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
   const firstField = React.useRef();
+  const queryClient = useQueryClient();
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm();
+
+  const { mutateAsync: createTask } = useMutation(create, {
+    onSuccess: () => {
+      queryClient.resetQueries(['tasks']);
+    },
+  });
+
+  const onSubmit = async (data) => {
+    await createTask(data);
+    onClose();
+  };
 
   return (
     <Drawer
@@ -45,94 +68,146 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
         <DrawerHeader borderBottomWidth='1px'>Create a new task</DrawerHeader>
 
         <DrawerBody>
-          <Stack spacing='24px'>
-            <Box>
-              <FormLabel htmlFor='title'>Title</FormLabel>
-              <Input
-                ref={firstField}
-                id='title'
-                placeholder='Please enter title'
-              />
-            </Box>
+          <form id='create-task-form' onSubmit={handleSubmit(onSubmit)}>
+            <Stack spacing='24px'>
+              <FormControl isInvalid={errors.title} as={Box} isRequired>
+                <FormLabel htmlFor='title'>Title</FormLabel>
+                <Input
+                  ref={firstField}
+                  id='title'
+                  placeholder='Please enter title'
+                  {...register('title')}
+                />
+              </FormControl>
 
-            <Box>
-              <FormLabel htmlFor='priority'>Select Priority</FormLabel>
-              <Select id='priority' defaultValue={PriorityType.NONE}>
-                <option value={PriorityType.NONE}>{PriorityType.NONE}</option>
-                <option value={PriorityType.LOW}>{PriorityType.LOW}</option>
-                <option value={PriorityType.NORMAL}>
-                  {PriorityType.NORMAL}
-                </option>
-                <option value={PriorityType.HIGH}>{PriorityType.HIGH}</option>
-                <option value={PriorityType.CRITICAL}>
-                  {PriorityType.CRITICAL}
-                </option>
-              </Select>
-            </Box>
+              <FormControl isInvalid={errors.priority} as={Box}>
+                <FormLabel htmlFor='priority'>Select Priority</FormLabel>
+                <Select
+                  id='priority'
+                  defaultValue={PriorityType.NONE}
+                  {...register('priority')}
+                >
+                  <option value={PriorityType.NONE}>{PriorityType.NONE}</option>
+                  <option value={PriorityType.LOW}>{PriorityType.LOW}</option>
+                  <option value={PriorityType.NORMAL}>
+                    {PriorityType.NORMAL}
+                  </option>
+                  <option value={PriorityType.HIGH}>{PriorityType.HIGH}</option>
+                  <option value={PriorityType.CRITICAL}>
+                    {PriorityType.CRITICAL}
+                  </option>
+                </Select>
+              </FormControl>
 
-            <Box>
-              <FormLabel htmlFor='category'>Select Category</FormLabel>
-              <Select id='category' defaultValue={CategoryType.FEATURE}>
-                <option value={CategoryType.FEATURE}>
-                  {CategoryType.FEATURE}
-                </option>
-                <option value={CategoryType.ISSUE}>{CategoryType.ISSUE}</option>
-                <option value={CategoryType.INQUIRY}>
-                  {CategoryType.INQUIRY}
-                </option>
-              </Select>
-            </Box>
+              <FormControl isInvalid={errors.category} as={Box}>
+                <FormLabel htmlFor='category'>Select Category</FormLabel>
+                <Select
+                  id='category'
+                  defaultValue={CategoryType.FEATURE}
+                  {...register('category')}
+                >
+                  <option value={CategoryType.FEATURE}>
+                    {CategoryType.FEATURE}
+                  </option>
+                  <option value={CategoryType.ISSUE}>
+                    {CategoryType.ISSUE}
+                  </option>
+                  <option value={CategoryType.INQUIRY}>
+                    {CategoryType.INQUIRY}
+                  </option>
+                </Select>
+              </FormControl>
 
-            <Box>
-              <FormLabel htmlFor='reproducible'>Select Reproducible</FormLabel>
-              <Select
-                id='reproducible'
-                defaultValue={ReproducibleType.NOT_APPLICABLE}
+              <FormControl isInvalid={errors.reproducible} as={Box}>
+                <FormLabel htmlFor='reproducible'>
+                  Select Reproducible
+                </FormLabel>
+                <Select
+                  id='reproducible'
+                  defaultValue={ReproducibleType.NOT_APPLICABLE}
+                  {...register('reproducible')}
+                >
+                  <option value={ReproducibleType.NOT_APPLICABLE}>
+                    {replaceUnderscores(ReproducibleType.NOT_APPLICABLE)}
+                  </option>
+                  <option value={ReproducibleType.UNABLE}>
+                    {ReproducibleType.UNABLE}
+                  </option>
+                  <option value={ReproducibleType.RARELY}>
+                    {ReproducibleType.RARELY}
+                  </option>
+                  <option value={ReproducibleType.SOMETIMES}>
+                    {ReproducibleType.SOMETIMES}
+                  </option>
+                  <option value={ReproducibleType.ALWAYS}>
+                    {ReproducibleType.ALWAYS}
+                  </option>
+                </Select>
+              </FormControl>
+
+              <FormControl
+                isInvalid={errors.shortDescription}
+                as={Box}
+                isRequired
               >
-                <option value={ReproducibleType.NOT_APPLICABLE}>
-                  {replaceUnderscores(ReproducibleType.NOT_APPLICABLE)}
-                </option>
-                <option value={ReproducibleType.UNABLE}>
-                  {ReproducibleType.UNABLE}
-                </option>
-                <option value={ReproducibleType.RARELY}>
-                  {ReproducibleType.RARELY}
-                </option>
-                <option value={ReproducibleType.SOMETIMES}>
-                  {ReproducibleType.SOMETIMES}
-                </option>
-                <option value={ReproducibleType.ALWAYS}>
-                  {ReproducibleType.ALWAYS}
-                </option>
-              </Select>
-            </Box>
+                <FormLabel htmlFor='shortDescription'>
+                  Short Description
+                </FormLabel>
+                <Textarea
+                  id='shortDescription'
+                  {...register('shortDescription')}
+                />
+              </FormControl>
 
-            <Box>
-              <FormLabel htmlFor='shortDescription'>
-                Short Description
-              </FormLabel>
-              <Textarea id='shortDescription' />
-            </Box>
+              <FormControl isInvalid={errors.longDescription} as={Box}>
+                <FormLabel htmlFor='longDescription'>
+                  Long Description
+                </FormLabel>
+                <Textarea
+                  id='longDescription'
+                  {...register('longDescription')}
+                />
+              </FormControl>
 
-            <Box>
-              <FormLabel htmlFor='longDescription'>Long Description</FormLabel>
-              <Textarea id='longDescription' />
-            </Box>
+              <FormControl isInvalid={errors.responsible} as={Box}>
+                <FormLabel htmlFor='assignedToId'>Select Responsible</FormLabel>
+                <Select
+                  id='assignedToId'
+                  defaultValue='1'
+                  {...register('assignedToId', { valueAsNumber: true })}
+                >
+                  <option value='1'>David Sánchez</option>
+                </Select>
+              </FormControl>
+            </Stack>
 
-            <Box>
-              <FormLabel htmlFor='responsible'>Select Responsible</FormLabel>
-              <Select id='responsible' defaultValue='1'>
-                <option value='1'>David Sánchez</option>
-              </Select>
-            </Box>
-          </Stack>
+            <input
+              type='hidden'
+              {...register('status')}
+              value={StatusType.BACKLOG}
+            />
+            <input
+              type='hidden'
+              {...register('notificationStatus')}
+              value={NotificationStatusType.NOT_NOTIFIED}
+            />
+
+            <input type='hidden' {...register('release')} value={'0.0.1'} />
+          </form>
         </DrawerBody>
 
         <DrawerFooter borderTopWidth='1px'>
           <Button variant='outline' mr={3} onClick={onClose}>
             Cancel
           </Button>
-          <Button colorScheme='blue'>Submit</Button>
+          <Button
+            colorScheme='blue'
+            type='submit'
+            isLoading={isSubmitting}
+            form='create-task-form'
+          >
+            Submit
+          </Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
