@@ -19,3 +19,18 @@ apiClient.interceptors.request.use(
     Promise.reject(error);
   },
 );
+
+apiClient.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    const originalConfig = error.config;
+    if (originalConfig.url !== '/auth/login' && error.response) {
+      if (error.response.status === 401) {
+        localStorage.removeItem('access_token');
+        return (window.location.href = '/login');
+      }
+    }
+  },
+);
