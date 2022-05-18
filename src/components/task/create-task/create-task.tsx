@@ -145,28 +145,9 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                 </Select>
               </FormControl>
 
-              <FormControl
-                isInvalid={errors.shortDescription}
-                as={Box}
-                isRequired
-              >
-                <FormLabel htmlFor='shortDescription'>
-                  Short Description
-                </FormLabel>
-                <Textarea
-                  id='shortDescription'
-                  {...register('shortDescription')}
-                />
-              </FormControl>
-
-              <FormControl isInvalid={errors.longDescription} as={Box}>
-                <FormLabel htmlFor='longDescription'>
-                  Long Description
-                </FormLabel>
-                <Textarea
-                  id='longDescription'
-                  {...register('longDescription')}
-                />
+              <FormControl isInvalid={errors.description} as={Box} isRequired>
+                <FormLabel htmlFor='description'>Description</FormLabel>
+                <Textarea id='description' {...register('description')} />
               </FormControl>
 
               <FormControl isInvalid={errors.responsible} as={Box}>

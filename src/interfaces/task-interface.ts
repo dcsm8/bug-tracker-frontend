@@ -8,8 +8,7 @@ export interface Task {
   notificationStatus: NotificationStatusType;
   category: CategoryType;
   reproducible: ReproducibleType;
-  shortDescription: string;
-  longDescription: string;
+  description: string;
   release: string;
   createdBy: User;
   assignedTo: User;

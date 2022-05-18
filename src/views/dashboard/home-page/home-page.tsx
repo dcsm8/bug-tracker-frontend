@@ -35,7 +35,7 @@ const Home = () => {
         };
         await updateTask(updatedTask);
       }}
-      renderCard={({ title, shortDescription }, { removeCard, dragging }) => (
+      renderCard={({ title, description }, { removeCard, dragging }) => (
         <Flex
           mt='10px'
           dragging={dragging}
@@ -45,7 +45,7 @@ const Home = () => {
           w='270px'
         >
           <Text fontSize='md'>{title}</Text>
-          <Text fontSize='md'>{shortDescription}</Text>
+          <Text fontSize='md'>{description}</Text>
         </Flex>
       )}
     />
