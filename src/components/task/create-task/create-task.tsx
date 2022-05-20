@@ -56,6 +56,8 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
     await createTask(data);
   };
 
+  const { ref, ...rest } = register('title');
+
   return (
     <Drawer
       isOpen={isOpen}
@@ -77,8 +79,11 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                 <Input
                   id='title'
                   placeholder='Please enter title'
-                  {...register('title')}
-                  ref={firstField}
+                  {...rest}
+                  ref={(e) => {
+                    ref(e);
+                    firstField.current = e;
+                  }}
                 />
               </FormControl>
 
@@ -147,7 +152,7 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                 </Select>
               </FormControl>
 
-              <FormControl isInvalid={errors.description} as={Box} isRequired>
+              <FormControl isInvalid={errors.description} as={Box}>
                 <FormLabel htmlFor='description'>Description</FormLabel>
                 <Textarea id='description' {...register('description')} />
               </FormControl>
