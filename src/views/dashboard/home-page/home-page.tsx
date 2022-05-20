@@ -50,6 +50,7 @@ const Home = () => {
 
     const updatedTask: Partial<Task> = {
       id: card.id,
+      position: destination.toPosition,
       status: destination.toColumnId,
     };
     await updateTask(updatedTask);
