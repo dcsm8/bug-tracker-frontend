@@ -1,3 +1,4 @@
+import { compareTasks } from './../utils/sort';
 import { Board, Column } from '@interfaces/board-interface';
 import { StatusType, Task } from '@interfaces/task-interface';
 import { apiClient } from './api';
@@ -33,7 +34,7 @@ export const createBoard = (tasks: Task[]): Board => {
   const testingTasks: Task[] = [];
   const completeTasks: Task[] = [];
 
-  tasks.forEach((task) => {
+  tasks.sort(compareTasks).forEach((task) => {
     switch (task.status) {
       case StatusType.BACKLOG:
         backlogTasks.push(task);
