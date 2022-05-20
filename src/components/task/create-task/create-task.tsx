@@ -40,18 +40,20 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm();
 
   const { mutateAsync: createTask } = useMutation(create, {
     onSuccess: () => {
-      queryClient.resetQueries(['tasks']);
+      queryClient.invalidateQueries(['tasks']);
+      onClose();
+      reset();
     },
   });
 
   const onSubmit = async (data) => {
     await createTask(data);
-    onClose();
   };
 
   return (
