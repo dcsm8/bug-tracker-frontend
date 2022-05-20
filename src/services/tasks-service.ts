@@ -17,8 +17,8 @@ export const create = async (task: Partial<Task>): Promise<Task> => {
   return response.data;
 };
 
-export const remove = async (id: number): Promise<Task> => {
-  const response = await apiClient.delete<Task>(`/tasks/${id}`);
+export const remove = async (task: Partial<Task>): Promise<Task> => {
+  const response = await apiClient.delete<Task>(`/tasks/${task.id}`);
   return response.data;
 };
 
