@@ -65,7 +65,6 @@ const Home = () => {
       w='270px'
     >
       <Text fontSize='md'>{card.title}</Text>
-      <Text fontSize='md'>{card.description}</Text>
       <Button type='button' onClick={() => onRemoveCard(card)}>
         Remove Card
       </Button>
