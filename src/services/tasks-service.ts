@@ -2,9 +2,9 @@ import { Board, Column } from '@interfaces/board-interface';
 import { StatusType, Task } from '@interfaces/task-interface';
 import { apiClient } from './api';
 
-export const findAll = async (): Promise<Board> => {
+export const findAll = async (): Promise<Task[]> => {
   const response = await apiClient.get<Task[]>('/tasks');
-  return createBoard(response.data);
+  return response.data;
 };
 
 export const findOne = async (id: number): Promise<Task> => {
@@ -27,7 +27,7 @@ export const update = async (task: Partial<Task>): Promise<Task> => {
   return response.data;
 };
 
-const createBoard = (tasks: Task[]): Board => {
+export const createBoard = (tasks: Task[]): Board => {
   const backlogTasks: Task[] = [];
   const inProgressTasks: Task[] = [];
   const testingTasks: Task[] = [];

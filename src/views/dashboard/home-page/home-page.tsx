@@ -9,13 +9,13 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { Task } from '@interfaces/task-interface';
-import { findAll, remove, update } from '@services/tasks-service';
+import { createBoard, findAll, remove, update } from '@services/tasks-service';
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const Home = () => {
   const queryClient = useQueryClient();
-  const [board, setBoard] = useState<Board>({});
+  const [board, setBoard] = useState<Task[]>([]);
   const { isLoading, data, isError } = useQuery(['tasks'], findAll, {
     onSuccess: (data) => {
       setBoard(data);
@@ -44,6 +44,10 @@ const Home = () => {
     );
 
   const onCardDragEnd = async (card, source, destination) => {
+    card.status = destination.toColumnId;
+    optimisticDelete(card.id);
+    setBoard((prevBoard) => [...prevBoard, card]);
+
     const updatedTask: Partial<Task> = {
       id: card.id,
       status: destination.toColumnId,
@@ -51,7 +55,12 @@ const Home = () => {
     await updateTask(updatedTask);
   };
 
+  const optimisticDelete = (id: number) => {
+    setBoard(board.filter((task) => task.id !== id));
+  };
+
   const onRemoveCard = async (card: Task) => {
+    optimisticDelete(card.id);
     await deleteTask(card);
   };
 
@@ -77,7 +86,7 @@ const Home = () => {
       onCardDragEnd={onCardDragEnd}
       renderCard={renderCard}
     >
-      {board}
+      {createBoard(board)}
     </Board>
   );
 };
