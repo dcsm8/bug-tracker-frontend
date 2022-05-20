@@ -1,6 +1,7 @@
 import { User } from './user-interface';
 
 export interface Task {
+  position: number;
   id: number;
   title: string;
   priority: PriorityType;
