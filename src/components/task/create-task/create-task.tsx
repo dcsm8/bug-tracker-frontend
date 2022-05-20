@@ -14,6 +14,7 @@ import {
   Textarea,
   DrawerFooter,
   FormControl,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 import {
   CategoryType,
@@ -25,12 +26,23 @@ import {
 import { create } from '@services/tasks-service';
 import { replaceUnderscores } from '@utils/text-pipes';
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 
 type CreateTaskProps = {
   isOpen: boolean;
   onClose: () => void;
+};
+
+type FormValues = {
+  title: string;
+  priority: PriorityType;
+  category: CategoryType;
+  reproducible: ReproducibleType;
+  description?: string;
+  assignedToId: number;
+  status: StatusType;
+  notificationStatus: NotificationStatusType;
 };
 
 export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
@@ -42,7 +54,7 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
     register,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm<FormValues>();
 
   const { mutateAsync: createTask } = useMutation(create, {
     onSuccess: () => {
@@ -52,7 +64,7 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
     },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     await createTask(data);
   };
 
@@ -74,7 +86,7 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
         <DrawerBody>
           <form id='create-task-form' onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing='24px'>
-              <FormControl isInvalid={errors.title} as={Box} isRequired>
+              <FormControl isInvalid={Boolean(errors.title)} as={Box}>
                 <FormLabel htmlFor='title'>Title</FormLabel>
                 <Input
                   id='title'
@@ -85,9 +97,12 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                     firstField.current = e;
                   }}
                 />
+                <FormErrorMessage>
+                  {errors.title && errors.title.message}
+                </FormErrorMessage>
               </FormControl>
 
-              <FormControl isInvalid={errors.priority} as={Box}>
+              <FormControl isInvalid={Boolean(errors.priority)} as={Box}>
                 <FormLabel htmlFor='priority'>Select Priority</FormLabel>
                 <Select
                   id='priority'
@@ -106,7 +121,7 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                 </Select>
               </FormControl>
 
-              <FormControl isInvalid={errors.category} as={Box}>
+              <FormControl isInvalid={Boolean(errors.category)} as={Box}>
                 <FormLabel htmlFor='category'>Select Category</FormLabel>
                 <Select
                   id='category'
@@ -125,7 +140,7 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                 </Select>
               </FormControl>
 
-              <FormControl isInvalid={errors.reproducible} as={Box}>
+              <FormControl isInvalid={Boolean(errors.reproducible)} as={Box}>
                 <FormLabel htmlFor='reproducible'>
                   Select Reproducible
                 </FormLabel>
@@ -152,12 +167,12 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                 </Select>
               </FormControl>
 
-              <FormControl isInvalid={errors.description} as={Box}>
+              <FormControl isInvalid={Boolean(errors.description)} as={Box}>
                 <FormLabel htmlFor='description'>Description</FormLabel>
                 <Textarea id='description' {...register('description')} />
               </FormControl>
 
-              <FormControl isInvalid={errors.responsible} as={Box}>
+              <FormControl isInvalid={Boolean(errors.assignedToId)} as={Box}>
                 <FormLabel htmlFor='assignedToId'>Select Responsible</FormLabel>
                 <Select
                   id='assignedToId'
@@ -183,7 +198,14 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
         </DrawerBody>
 
         <DrawerFooter borderTopWidth='1px'>
-          <Button variant='outline' mr={3} onClick={onClose}>
+          <Button
+            variant='outline'
+            mr={3}
+            onClick={() => {
+              onClose();
+              reset();
+            }}
+          >
             Cancel
           </Button>
           <Button
