@@ -34,8 +34,8 @@ type CreateTaskProps = {
 };
 
 export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
-  const firstField = React.useRef();
   const queryClient = useQueryClient();
+  const firstField = React.useRef<any>();
 
   const {
     handleSubmit,
@@ -60,9 +60,9 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
     <Drawer
       isOpen={isOpen}
       placement='right'
-      initialFocusRef={firstField}
       onClose={onClose}
       size='lg'
+      initialFocusRef={firstField}
     >
       <DrawerOverlay />
       <DrawerContent>
@@ -75,10 +75,10 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
               <FormControl isInvalid={errors.title} as={Box} isRequired>
                 <FormLabel htmlFor='title'>Title</FormLabel>
                 <Input
-                  ref={firstField}
                   id='title'
                   placeholder='Please enter title'
                   {...register('title')}
+                  ref={firstField}
                 />
               </FormControl>
 
@@ -174,8 +174,6 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
               {...register('notificationStatus')}
               value={NotificationStatusType.NOT_NOTIFIED}
             />
-
-            <input type='hidden' {...register('release')} value={'0.0.1'} />
           </form>
         </DrawerBody>
 
