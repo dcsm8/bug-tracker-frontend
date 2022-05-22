@@ -1,4 +1,4 @@
-import Board, { moveCard } from '@asseinfo/react-kanban';
+import Board, { moveCard, removeCard } from '@asseinfo/react-kanban';
 import '@asseinfo/react-kanban/dist/styles.css';
 import {
   Alert,
@@ -61,7 +61,9 @@ const Home = () => {
   };
 
   const onRemoveCard = async (card: Task) => {
-    setBoard(board.filter((task) => task.id !== card.id));
+    const updatedBoard = removeCard(board, { id: card.status }, card);
+    setBoard(updatedBoard);
+
     await deleteTask(card);
   };
 
