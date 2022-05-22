@@ -7,7 +7,9 @@ import {
   Flex,
   Spinner,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
+import { ViewTask } from '@components/task/view-task/view-task';
 import { Task } from '@interfaces/task-interface';
 import {
   createBoard,
@@ -21,8 +23,10 @@ import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const Home = () => {
+  const { isOpen, onOpen: onOpenViewTask, onClose } = useDisclosure();
   const queryClient = useQueryClient();
   const [board, setBoard] = useState<Board>({});
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const { isLoading, data, isError } = useQuery(['tasks'], findAll, {
     onSuccess: (data) => {
       setBoard(createBoard(data));
@@ -64,10 +68,17 @@ const Home = () => {
     const updatedBoard = removeCard(board, { id: card.status }, card);
     setBoard(updatedBoard);
 
+    onClose();
+
     await deleteTask(card);
   };
 
-  const renderCard = (card: Task, { dragging }) => (
+  const openTask = (task: Task) => {
+    setSelectedTask(task);
+    onOpenViewTask();
+  };
+
+  const renderCard = (task: Task, { dragging }) => (
     <Flex
       mt='10px'
       dragging={dragging}
@@ -75,22 +86,28 @@ const Home = () => {
       p='25px'
       borderRadius='15px'
       w='270px'
+      onClick={() => openTask(task)}
     >
-      <Text fontSize='md'>{card.title}</Text>
-      <Button type='button' onClick={() => onRemoveCard(card)}>
-        Remove Card
-      </Button>
+      <Text fontSize='md'>{task.title}</Text>
     </Flex>
   );
 
   return (
-    <Board
-      disableColumnDrag
-      onCardDragEnd={onCardDragEnd}
-      renderCard={renderCard}
-    >
-      {board}
-    </Board>
+    <>
+      <Board
+        disableColumnDrag
+        onCardDragEnd={onCardDragEnd}
+        renderCard={renderCard}
+      >
+        {board}
+      </Board>
+      <ViewTask
+        isOpen={isOpen}
+        onClose={onClose}
+        onRemoveCard={onRemoveCard}
+        selectedTask={selectedTask}
+      />
+    </>
   );
 };
 
