@@ -1,3 +1,4 @@
+import { UpdatePositionDto } from './../interfaces/task-interface';
 import { compareTasks } from './../utils/sort';
 import { Board, Column } from '@interfaces/board-interface';
 import { StatusType, Task } from '@interfaces/task-interface';
@@ -25,6 +26,16 @@ export const remove = async (task: Partial<Task>): Promise<Task> => {
 
 export const update = async (task: Partial<Task>): Promise<Task> => {
   const response = await apiClient.patch<Task>(`/tasks/${task.id}`, task);
+  return response.data;
+};
+
+export const updatePositions = async (
+  updatePosition: UpdatePositionDto,
+): Promise<void> => {
+  const response = await apiClient.patch(
+    '/tasks/positions/update',
+    updatePosition,
+  );
   return response.data;
 };
 
@@ -87,4 +98,15 @@ export const createBoard = (tasks: Task[]): Board => {
   };
 
   return board;
+};
+
+export const getPositions = (board: Board): UpdatePositionDto => {
+  const positions: UpdatePositionDto = {
+    [StatusType.BACKLOG]: [...board.columns[0].cards.map((obj) => obj.id)],
+    [StatusType.IN_PROGRESS]: [...board.columns[1].cards.map((obj) => obj.id)],
+    [StatusType.TESTING]: [...board.columns[2].cards.map((obj) => obj.id)],
+    [StatusType.COMPLETE]: [...board.columns[3].cards.map((obj) => obj.id)],
+  };
+
+  return positions;
 };

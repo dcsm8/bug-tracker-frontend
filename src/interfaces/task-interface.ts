@@ -17,6 +17,13 @@ export interface Task {
   updatedAt: Date;
 }
 
+export interface UpdatePositionDto {
+  backlog: number[];
+  in_progress: number[];
+  testing: number[];
+  complete: number[];
+}
+
 export enum CategoryType {
   ISSUE = 'issue',
   FEATURE = 'feature',

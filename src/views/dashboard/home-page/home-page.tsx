@@ -1,4 +1,4 @@
-import Board from '@asseinfo/react-kanban';
+import Board, { moveCard } from '@asseinfo/react-kanban';
 import '@asseinfo/react-kanban/dist/styles.css';
 import {
   Alert,
@@ -9,16 +9,23 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { Task } from '@interfaces/task-interface';
-import { createBoard, findAll, remove, update } from '@services/tasks-service';
+import {
+  createBoard,
+  findAll,
+  getPositions,
+  remove,
+  update,
+  updatePositions,
+} from '@services/tasks-service';
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const Home = () => {
   const queryClient = useQueryClient();
-  const [board, setBoard] = useState<Task[]>([]);
+  const [board, setBoard] = useState<Board>({});
   const { isLoading, data, isError } = useQuery(['tasks'], findAll, {
     onSuccess: (data) => {
-      setBoard(data);
+      setBoard(createBoard(data));
     },
   });
 
@@ -27,6 +34,8 @@ const Home = () => {
       queryClient.invalidateQueries(['tasks']);
     },
   });
+
+  const { mutateAsync: updateTaskPositions } = useMutation(updatePositions);
 
   const { mutateAsync: deleteTask } = useMutation(remove, {
     onSuccess: () => {
@@ -44,24 +53,15 @@ const Home = () => {
     );
 
   const onCardDragEnd = async (card, source, destination) => {
-    card.status = destination.toColumnId;
-    optimisticDelete(card.id);
-    setBoard((prevBoard) => [...prevBoard, card]);
+    const updatedBoard = moveCard(board, source, destination);
+    setBoard(updatedBoard);
 
-    const updatedTask: Partial<Task> = {
-      id: card.id,
-      position: destination.toPosition,
-      status: destination.toColumnId,
-    };
-    await updateTask(updatedTask);
-  };
-
-  const optimisticDelete = (id: number) => {
-    setBoard(board.filter((task) => task.id !== id));
+    const updatedPositions = getPositions(updatedBoard);
+    await updateTaskPositions(updatedPositions);
   };
 
   const onRemoveCard = async (card: Task) => {
-    optimisticDelete(card.id);
+    setBoard(board.filter((task) => task.id !== card.id));
     await deleteTask(card);
   };
 
@@ -87,7 +87,7 @@ const Home = () => {
       onCardDragEnd={onCardDragEnd}
       renderCard={renderCard}
     >
-      {createBoard(board)}
+      {board}
     </Board>
   );
 };
