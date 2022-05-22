@@ -5,11 +5,14 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerBody,
+  EditableTextarea,
+  VStack,
   Stack,
   Box,
   FormLabel,
   Select,
   Textarea,
+  Divider,
   DrawerFooter,
   FormControl,
   IconButton,
@@ -18,8 +21,17 @@ import {
   MenuItem,
   MenuList,
   Icon,
+  HStack,
+  Flex,
+  Spacer,
+  Editable,
+  Tooltip,
+  EditablePreview,
+  useColorModeValue,
+  Input,
+  EditableInput,
 } from '@chakra-ui/react';
-import { FiMoreVertical, FiTrash } from 'react-icons/fi';
+import { FiMoreHorizontal, FiTrash } from 'react-icons/fi';
 import {
   CategoryType,
   NotificationStatusType,
@@ -59,28 +71,19 @@ export const ViewTask = ({
   selectedTask,
 }: CreateTaskProps) => {
   const queryClient = useQueryClient();
-  const firstField = React.useRef<any>();
 
-  const {
-    handleSubmit,
-    register,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<FormValues>();
+  const btnRef = React.useRef(null);
 
   const { mutateAsync: createTask } = useMutation(create, {
     onSuccess: () => {
       queryClient.invalidateQueries(['tasks']);
       onClose();
-      reset();
     },
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     await createTask(data);
   };
-
-  const { ref, ...rest } = register('title');
 
   if (!selectedTask) return null;
 
@@ -89,154 +92,182 @@ export const ViewTask = ({
       isOpen={isOpen}
       placement='right'
       onClose={onClose}
-      size='lg'
-      initialFocusRef={firstField}
+      size='xl'
+      autoFocus={false}
     >
       <DrawerOverlay />
       <DrawerContent>
         <DrawerHeader borderBottomWidth='1px'>
-          {selectedTask.title}
+          <HStack minWidth='max-content' alignItems='center' gap='2'>
+            <Editable
+              defaultValue={selectedTask.title}
+              placeholder='Enter title'
+              isPreviewFocusable={true}
+              selectAllOnFocus={false}
+              onSubmit={(nextValue: string) => console.log(nextValue)}
+              w='full'
+            >
+              <Tooltip label='Click to edit'>
+                <EditablePreview
+                  _hover={{
+                    background: useColorModeValue('gray.100', 'gray.700'),
+                  }}
+                />
+              </Tooltip>
+              <Input py={2} px={4} as={EditableInput} />
+            </Editable>
+            <Box justifySelf='end'>
+              <Menu>
+                <MenuButton
+                  as={IconButton}
+                  aria-label='Options'
+                  icon={<Icon as={FiMoreHorizontal} />}
+                  variant='outline'
+                  initialFocusRef={btnRef}
+                />
+                <MenuList>
+                  <MenuItem
+                    icon={<Icon as={FiTrash} />}
+                    onClick={() => onRemoveCard(selectedTask)}
+                  >
+                    Delete
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </Box>
+          </HStack>
         </DrawerHeader>
 
-        <Box pos='absolute' right='0.75rem' top='0.6rem'>
-          <Menu>
-            <MenuButton
-              as={IconButton}
-              aria-label='Options'
-              icon={<Icon as={FiMoreVertical} />}
-              variant='outline'
-            />
-            <MenuList>
-              <MenuItem
-                icon={<Icon as={FiTrash} />}
-                onClick={() => onRemoveCard(selectedTask)}
-              >
-                Delete
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        </Box>
-
         <DrawerBody>
-          <form id='create-task-form' onSubmit={handleSubmit(onSubmit)}>
-            <Stack spacing='24px'>
-              <FormControl isInvalid={Boolean(errors.priority)} as={Box}>
-                <FormLabel htmlFor='priority'>Priority</FormLabel>
-                <Select
-                  id='priority'
-                  defaultValue={selectedTask.priority}
-                  {...register('priority')}
-                >
-                  <option value={PriorityType.NONE}>{PriorityType.NONE}</option>
-                  <option value={PriorityType.LOW}>{PriorityType.LOW}</option>
-                  <option value={PriorityType.NORMAL}>
-                    {PriorityType.NORMAL}
-                  </option>
-                  <option value={PriorityType.HIGH}>{PriorityType.HIGH}</option>
-                  <option value={PriorityType.CRITICAL}>
-                    {PriorityType.CRITICAL}
-                  </option>
-                </Select>
-              </FormControl>
+          <Flex gap={10}>
+            <Box flex={2}>
+              <FormLabel htmlFor='description'>Description</FormLabel>
+              <Editable
+                defaultValue={selectedTask.description}
+                placeholder='Enter description'
+                isPreviewFocusable={true}
+                selectAllOnFocus={false}
+                onSubmit={(nextValue: string) => console.log(nextValue)}
+                w='full'
+              >
+                <Tooltip label='Click to edit'>
+                  <EditablePreview
+                    _hover={{
+                      background: useColorModeValue('gray.100', 'gray.700'),
+                    }}
+                  />
+                </Tooltip>
+                <Input id='description' as={EditableTextarea} />
+              </Editable>
+            </Box>
+            <Box flex={1}>
+              <Stack spacing='24px'>
+                <Box>
+                  <FormLabel htmlFor='priority'>Status</FormLabel>
+                  <Select id='priority' defaultValue={selectedTask.status}>
+                    <option value={StatusType.BACKLOG}>
+                      {StatusType.BACKLOG}
+                    </option>
+                    <option value={StatusType.IN_PROGRESS}>
+                      {replaceUnderscores(StatusType.IN_PROGRESS)}
+                    </option>
+                    <option value={StatusType.TESTING}>
+                      {StatusType.TESTING}
+                    </option>
+                    <option value={StatusType.COMPLETE}>
+                      {StatusType.COMPLETE}
+                    </option>
+                  </Select>
+                </Box>
 
-              <FormControl isInvalid={Boolean(errors.category)} as={Box}>
-                <FormLabel htmlFor='category'>Category</FormLabel>
-                <Select
-                  id='category'
-                  defaultValue={selectedTask.category}
-                  {...register('category')}
-                >
-                  <option value={CategoryType.FEATURE}>
-                    {CategoryType.FEATURE}
-                  </option>
-                  <option value={CategoryType.ISSUE}>
-                    {CategoryType.ISSUE}
-                  </option>
-                  <option value={CategoryType.INQUIRY}>
-                    {CategoryType.INQUIRY}
-                  </option>
-                </Select>
-              </FormControl>
+                <Box>
+                  <FormLabel htmlFor='priority'>Priority</FormLabel>
+                  <Select id='priority' defaultValue={selectedTask.priority}>
+                    <option value={PriorityType.NONE}>
+                      {PriorityType.NONE}
+                    </option>
+                    <option value={PriorityType.LOW}>{PriorityType.LOW}</option>
+                    <option value={PriorityType.NORMAL}>
+                      {PriorityType.NORMAL}
+                    </option>
+                    <option value={PriorityType.HIGH}>
+                      {PriorityType.HIGH}
+                    </option>
+                    <option value={PriorityType.CRITICAL}>
+                      {PriorityType.CRITICAL}
+                    </option>
+                  </Select>
+                </Box>
 
-              <FormControl isInvalid={Boolean(errors.reproducible)} as={Box}>
-                <FormLabel htmlFor='reproducible'>Reproducible</FormLabel>
-                <Select
-                  id='reproducible'
-                  defaultValue={selectedTask.reproducible}
-                  {...register('reproducible')}
-                >
-                  <option value={ReproducibleType.NOT_APPLICABLE}>
-                    {replaceUnderscores(ReproducibleType.NOT_APPLICABLE)}
-                  </option>
-                  <option value={ReproducibleType.UNABLE}>
-                    {ReproducibleType.UNABLE}
-                  </option>
-                  <option value={ReproducibleType.RARELY}>
-                    {ReproducibleType.RARELY}
-                  </option>
-                  <option value={ReproducibleType.SOMETIMES}>
-                    {ReproducibleType.SOMETIMES}
-                  </option>
-                  <option value={ReproducibleType.ALWAYS}>
-                    {ReproducibleType.ALWAYS}
-                  </option>
-                </Select>
-              </FormControl>
+                <Box>
+                  <FormLabel htmlFor='category'>Category</FormLabel>
+                  <Select id='category' defaultValue={selectedTask.category}>
+                    <option value={CategoryType.FEATURE}>
+                      {CategoryType.FEATURE}
+                    </option>
+                    <option value={CategoryType.ISSUE}>
+                      {CategoryType.ISSUE}
+                    </option>
+                    <option value={CategoryType.INQUIRY}>
+                      {CategoryType.INQUIRY}
+                    </option>
+                  </Select>
+                </Box>
 
-              <FormControl isInvalid={Boolean(errors.description)} as={Box}>
-                <FormLabel htmlFor='description'>Description</FormLabel>
-                <Textarea
-                  id='description'
-                  {...register('description')}
-                  value={selectedTask.description}
-                />
-              </FormControl>
+                <Box>
+                  <FormLabel htmlFor='reproducible'>Reproducible</FormLabel>
+                  <Select
+                    id='reproducible'
+                    defaultValue={selectedTask.reproducible}
+                  >
+                    <option value={ReproducibleType.NOT_APPLICABLE}>
+                      {replaceUnderscores(ReproducibleType.NOT_APPLICABLE)}
+                    </option>
+                    <option value={ReproducibleType.UNABLE}>
+                      {ReproducibleType.UNABLE}
+                    </option>
+                    <option value={ReproducibleType.RARELY}>
+                      {ReproducibleType.RARELY}
+                    </option>
+                    <option value={ReproducibleType.SOMETIMES}>
+                      {ReproducibleType.SOMETIMES}
+                    </option>
+                    <option value={ReproducibleType.ALWAYS}>
+                      {ReproducibleType.ALWAYS}
+                    </option>
+                  </Select>
+                </Box>
 
-              <FormControl isInvalid={Boolean(errors.assignedToId)} as={Box}>
-                <FormLabel htmlFor='assignedToId'>Responsible</FormLabel>
-                <Select
-                  id='assignedToId'
-                  defaultValue={selectedTask.assignedTo.id}
-                  {...register('assignedToId', { valueAsNumber: true })}
-                >
-                  <option value='1'>David Sánchez</option>
-                </Select>
-              </FormControl>
-            </Stack>
+                <Box>
+                  <FormLabel htmlFor='assignedToId'>Responsible</FormLabel>
+                  <Select
+                    id='assignedToId'
+                    defaultValue={selectedTask.assignedTo.id}
+                  >
+                    <option value='1'>David Sánchez</option>
+                  </Select>
+                </Box>
 
-            <input
-              type='hidden'
-              {...register('status')}
-              value={StatusType.BACKLOG}
-            />
-            <input
-              type='hidden'
-              {...register('notificationStatus')}
-              value={NotificationStatusType.NOT_NOTIFIED}
-            />
-          </form>
+                <Box>
+                  <FormLabel htmlFor='assignedToId'>
+                    Notification Status
+                  </FormLabel>
+                  <Select
+                    id='assignedToId'
+                    defaultValue={selectedTask.notificationStatus}
+                  >
+                    <option value={NotificationStatusType.NOT_NOTIFIED}>
+                      {replaceUnderscores(NotificationStatusType.NOT_NOTIFIED)}
+                    </option>
+                    <option value={NotificationStatusType.NOTIFIED}>
+                      {NotificationStatusType.NOTIFIED}
+                    </option>
+                  </Select>
+                </Box>
+              </Stack>
+            </Box>
+          </Flex>
         </DrawerBody>
-
-        <DrawerFooter borderTopWidth='1px'>
-          <Button
-            variant='outline'
-            mr={3}
-            onClick={() => {
-              onClose();
-              reset();
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
-            colorScheme='blue'
-            type='submit'
-            isLoading={isSubmitting}
-            form='create-task-form'
-          >
-            Submit
-          </Button>
-        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );
