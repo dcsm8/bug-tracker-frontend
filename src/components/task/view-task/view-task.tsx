@@ -69,11 +69,11 @@ export const ViewTask = ({
     },
   });
 
-  const onSubmit = async (key, value) => {
+  const onSubmit = async (prop: keyof Task, value) => {
     if (selectedTask) {
       const updatedTask: Partial<Task> = {
         id: selectedTask.id,
-        [key]: value,
+        [prop]: value,
       };
       // changeCard(board, cardId, newCard);
       await updateTask(updatedTask);
