@@ -3,7 +3,6 @@ import '@asseinfo/react-kanban/dist/styles.css';
 import {
   Alert,
   AlertIcon,
-  Button,
   Flex,
   Spinner,
   Text,

@@ -72,8 +72,6 @@ export const ViewTask = ({
 }: CreateTaskProps) => {
   const queryClient = useQueryClient();
 
-  const btnRef = React.useRef(null);
-
   const { mutateAsync: createTask } = useMutation(create, {
     onSuccess: () => {
       queryClient.invalidateQueries(['tasks']);
@@ -123,9 +121,8 @@ export const ViewTask = ({
                   aria-label='Options'
                   icon={<Icon as={FiMoreHorizontal} />}
                   variant='outline'
-                  initialFocusRef={btnRef}
                 />
-                <MenuList>
+                <MenuList fontSize='md'>
                   <MenuItem
                     icon={<Icon as={FiTrash} />}
                     onClick={() => onRemoveCard(selectedTask)}
