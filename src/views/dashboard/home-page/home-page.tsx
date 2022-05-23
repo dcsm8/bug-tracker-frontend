@@ -15,7 +15,6 @@ import {
   findAll,
   getPositions,
   remove,
-  update,
   updatePositions,
 } from '@services/tasks-service';
 import { useState } from 'react';
@@ -29,12 +28,6 @@ const Home = () => {
   const { isLoading, data, isError } = useQuery(['tasks'], findAll, {
     onSuccess: (data) => {
       setBoard(createBoard(data));
-    },
-  });
-
-  const { mutateAsync: updateTask } = useMutation(update, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['tasks']);
     },
   });
 

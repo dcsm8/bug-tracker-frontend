@@ -1,20 +1,14 @@
 import {
-  Button,
   Drawer,
   DrawerOverlay,
   DrawerContent,
   DrawerHeader,
   DrawerBody,
   EditableTextarea,
-  VStack,
   Stack,
   Box,
   FormLabel,
   Select,
-  Textarea,
-  Divider,
-  DrawerFooter,
-  FormControl,
   IconButton,
   Menu,
   MenuButton,
@@ -23,7 +17,6 @@ import {
   Icon,
   HStack,
   Flex,
-  Spacer,
   Editable,
   Tooltip,
   EditablePreview,
@@ -40,10 +33,8 @@ import {
   StatusType,
   Task,
 } from '@interfaces/task-interface';
-import { create } from '@services/tasks-service';
+import { update } from '@services/tasks-service';
 import { replaceUnderscores } from '@utils/text-pipes';
-import React from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 
 type CreateTaskProps = {
@@ -72,15 +63,21 @@ export const ViewTask = ({
 }: CreateTaskProps) => {
   const queryClient = useQueryClient();
 
-  const { mutateAsync: createTask } = useMutation(create, {
+  const { mutateAsync: updateTask } = useMutation(update, {
     onSuccess: () => {
       queryClient.invalidateQueries(['tasks']);
-      onClose();
     },
   });
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    await createTask(data);
+  const onSubmit = async (key, value) => {
+    if (selectedTask) {
+      const updatedTask: Partial<Task> = {
+        id: selectedTask.id,
+        [key]: value,
+      };
+      // changeCard(board, cardId, newCard);
+      await updateTask(updatedTask);
+    }
   };
 
   if (!selectedTask) return null;
@@ -102,7 +99,7 @@ export const ViewTask = ({
               placeholder='Enter title'
               isPreviewFocusable={true}
               selectAllOnFocus={false}
-              onSubmit={(nextValue: string) => console.log(nextValue)}
+              onSubmit={(nextValue: string) => onSubmit('title', nextValue)}
               w='full'
             >
               <Tooltip label='Click to edit'>
@@ -144,7 +141,9 @@ export const ViewTask = ({
                 placeholder='Enter description'
                 isPreviewFocusable={true}
                 selectAllOnFocus={false}
-                onSubmit={(nextValue: string) => console.log(nextValue)}
+                onSubmit={(nextValue: string) =>
+                  onSubmit('description', nextValue)
+                }
                 w='full'
               >
                 <Tooltip label='Click to edit'>
@@ -160,8 +159,12 @@ export const ViewTask = ({
             <Box flex={1}>
               <Stack spacing='24px'>
                 <Box>
-                  <FormLabel htmlFor='priority'>Status</FormLabel>
-                  <Select id='priority' defaultValue={selectedTask.status}>
+                  <FormLabel htmlFor='status'>Status</FormLabel>
+                  <Select
+                    id='status'
+                    defaultValue={selectedTask.status}
+                    onChange={(e) => onSubmit('status', e.target.value)}
+                  >
                     <option value={StatusType.BACKLOG}>
                       {StatusType.BACKLOG}
                     </option>
@@ -179,7 +182,11 @@ export const ViewTask = ({
 
                 <Box>
                   <FormLabel htmlFor='priority'>Priority</FormLabel>
-                  <Select id='priority' defaultValue={selectedTask.priority}>
+                  <Select
+                    id='priority'
+                    defaultValue={selectedTask.priority}
+                    onChange={(e) => onSubmit('priority', e.target.value)}
+                  >
                     <option value={PriorityType.NONE}>
                       {PriorityType.NONE}
                     </option>
@@ -198,7 +205,11 @@ export const ViewTask = ({
 
                 <Box>
                   <FormLabel htmlFor='category'>Category</FormLabel>
-                  <Select id='category' defaultValue={selectedTask.category}>
+                  <Select
+                    id='category'
+                    defaultValue={selectedTask.category}
+                    onChange={(e) => onSubmit('category', e.target.value)}
+                  >
                     <option value={CategoryType.FEATURE}>
                       {CategoryType.FEATURE}
                     </option>
@@ -216,6 +227,7 @@ export const ViewTask = ({
                   <Select
                     id='reproducible'
                     defaultValue={selectedTask.reproducible}
+                    onChange={(e) => onSubmit('reproducible', e.target.value)}
                   >
                     <option value={ReproducibleType.NOT_APPLICABLE}>
                       {replaceUnderscores(ReproducibleType.NOT_APPLICABLE)}
@@ -246,12 +258,15 @@ export const ViewTask = ({
                 </Box>
 
                 <Box>
-                  <FormLabel htmlFor='assignedToId'>
+                  <FormLabel htmlFor='notificationStatus'>
                     Notification Status
                   </FormLabel>
                   <Select
-                    id='assignedToId'
+                    id='notificationStatus'
                     defaultValue={selectedTask.notificationStatus}
+                    onChange={(e) =>
+                      onSubmit('notificationStatus', e.target.value)
+                    }
                   >
                     <option value={NotificationStatusType.NOT_NOTIFIED}>
                       {replaceUnderscores(NotificationStatusType.NOT_NOTIFIED)}
