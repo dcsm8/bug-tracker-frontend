@@ -37,22 +37,11 @@ import { update } from '@services/tasks-service';
 import { replaceUnderscores } from '@utils/text-pipes';
 import { useMutation, useQueryClient } from 'react-query';
 
-type CreateTaskProps = {
+type ViewTaskProps = {
   isOpen: boolean;
   onClose: () => void;
   onRemoveCard: (card: Task) => void;
   selectedTask: Task | null;
-};
-
-type FormValues = {
-  title: string;
-  priority: PriorityType;
-  category: CategoryType;
-  reproducible: ReproducibleType;
-  description?: string;
-  assignedToId: number;
-  status: StatusType;
-  notificationStatus: NotificationStatusType;
 };
 
 export const ViewTask = ({
@@ -60,7 +49,7 @@ export const ViewTask = ({
   onClose,
   onRemoveCard,
   selectedTask,
-}: CreateTaskProps) => {
+}: ViewTaskProps) => {
   const queryClient = useQueryClient();
 
   const { mutateAsync: updateTask } = useMutation(update, {
