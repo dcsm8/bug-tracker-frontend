@@ -36,6 +36,7 @@ import {
 import { update } from '@services/tasks-service';
 import { replaceUnderscores } from '@utils/text-pipes';
 import { useMutation, useQueryClient } from 'react-query';
+import { RichTextEditor } from '@components/rich-text-editor/rich-text-editor';
 
 type ViewTaskProps = {
   isOpen: boolean;
@@ -144,6 +145,7 @@ export const ViewTask = ({
                 </Tooltip>
                 <Input id='description' as={EditableTextarea} />
               </Editable>
+              <RichTextEditor />
             </Box>
             <Box flex={1}>
               <Stack spacing='24px'>
