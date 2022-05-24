@@ -4,7 +4,6 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerBody,
-  EditableTextarea,
   Stack,
   Box,
   FormLabel,
@@ -157,29 +156,11 @@ export const ViewTask = ({
           <Flex gap={10}>
             <Box flex={2}>
               <FormLabel htmlFor='description'>Description</FormLabel>
-              <Editable
-                defaultValue={selectedTask.description}
-                placeholder='Enter description'
-                isPreviewFocusable={true}
-                selectAllOnFocus={false}
-                onSubmit={(nextValue: string) =>
-                  onSubmit('description', nextValue)
-                }
-                w='full'
-              >
-                <Tooltip label='Click to edit'>
-                  <EditablePreview
-                    _hover={{
-                      background: useColorModeValue('gray.100', 'gray.700'),
-                    }}
-                  />
-                </Tooltip>
-                <Input id='description' as={EditableTextarea} />
-              </Editable>
               <Editor
                 editorState={editorState}
                 wrapperClassName='demo-wrapper'
                 editorClassName='demo-editor'
+                toolbarClassName='rich-text__toolbar'
                 onEditorStateChange={setEditorState}
                 onContentStateChange={onContentStateChange}
               />
