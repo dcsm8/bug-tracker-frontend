@@ -36,7 +36,17 @@ import {
 import { update } from '@services/tasks-service';
 import { replaceUnderscores } from '@utils/text-pipes';
 import { useMutation, useQueryClient } from 'react-query';
-import { RichTextEditor } from '@components/rich-text-editor/rich-text-editor';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import '@components/rich-text-editor/rich-text-editor.css';
+import draftToHtml from 'draftjs-to-html';
+import {
+  EditorState,
+  ContentState,
+  convertFromHTML,
+  convertToRaw,
+} from 'draft-js';
+import { useEffect, useState } from 'react';
 
 type ViewTaskProps = {
   isOpen: boolean;
@@ -51,7 +61,23 @@ export const ViewTask = ({
   onRemoveCard,
   selectedTask,
 }: ViewTaskProps) => {
+  if (!selectedTask) return null;
+
   const queryClient = useQueryClient();
+
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty(),
+  );
+
+  useEffect(() => {
+    setEditorState(
+      EditorState.createWithContent(
+        ContentState.createFromBlockArray(
+          convertFromHTML(selectedTask!.description),
+        ),
+      ),
+    );
+  }, [selectedTask]);
 
   const { mutateAsync: updateTask } = useMutation(update, {
     onSuccess: () => {
@@ -70,7 +96,12 @@ export const ViewTask = ({
     }
   };
 
-  if (!selectedTask) return null;
+  const onContentStateChange = async (contentState) => {
+    const rawContentState = convertToRaw(editorState.getCurrentContent());
+
+    const markup = draftToHtml(rawContentState);
+    await onSubmit('description', markup);
+  };
 
   return (
     <Drawer
@@ -145,7 +176,13 @@ export const ViewTask = ({
                 </Tooltip>
                 <Input id='description' as={EditableTextarea} />
               </Editable>
-              <RichTextEditor />
+              <Editor
+                editorState={editorState}
+                wrapperClassName='demo-wrapper'
+                editorClassName='demo-editor'
+                onEditorStateChange={setEditorState}
+                onContentStateChange={onContentStateChange}
+              />
             </Box>
             <Box flex={1}>
               <Stack spacing='24px'>
