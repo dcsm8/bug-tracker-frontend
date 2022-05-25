@@ -7,6 +7,7 @@ export const RichTextEditor = ({ ...props }) => {
     <Editor
       wrapperClassName='demo-wrapper'
       editorClassName='demo-editor'
+      toolbarClassName='rich-text__toolbar'
       {...props}
     />
   );
