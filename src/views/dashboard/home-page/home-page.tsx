@@ -1,4 +1,5 @@
 import Board, { moveCard, removeCard } from '@asseinfo/react-kanban';
+import shallow from 'zustand/shallow';
 import '@asseinfo/react-kanban/dist/styles.css';
 import {
   Alert,
@@ -17,14 +18,15 @@ import {
   remove,
   updatePositions,
 } from '@services/tasks-service';
+import { useTaskStore } from '@store/task-store';
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const Home = () => {
   const { isOpen, onOpen: onOpenViewTask, onClose } = useDisclosure();
+  const setSelectedTask = useTaskStore((state) => state.setSelectedTask);
   const queryClient = useQueryClient();
   const [board, setBoard] = useState<Board>({});
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const { isLoading, data, isError } = useQuery(['tasks'], findAll, {
     onSuccess: (data) => {
       setBoard(createBoard(data));
@@ -93,12 +95,7 @@ const Home = () => {
       >
         {board}
       </Board>
-      <ViewTask
-        isOpen={isOpen}
-        onClose={onClose}
-        onRemoveCard={onRemoveCard}
-        selectedTask={selectedTask}
-      />
+      <ViewTask isOpen={isOpen} onClose={onClose} onRemoveCard={onRemoveCard} />
     </>
   );
 };

@@ -44,21 +44,16 @@ import {
 } from 'draft-js';
 import { useEffect, useState } from 'react';
 import { RichTextEditor } from '@components/rich-text-editor/rich-text-editor';
+import { useTaskStore } from '@store/task-store';
 
 type ViewTaskProps = {
   isOpen: boolean;
   onClose: () => void;
   onRemoveCard: (card: Task) => void;
-  selectedTask: Task | null;
 };
 
-export const ViewTask = ({
-  isOpen,
-  onClose,
-  onRemoveCard,
-  selectedTask,
-}: ViewTaskProps) => {
-  if (!selectedTask) return null;
+export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
+  const selectedTask = useTaskStore((state) => state.selectedTask);
 
   const queryClient = useQueryClient();
 
@@ -67,13 +62,15 @@ export const ViewTask = ({
   );
 
   useEffect(() => {
-    setEditorState(
-      EditorState.createWithContent(
-        ContentState.createFromBlockArray(
-          convertFromHTML(selectedTask!.description),
+    if (selectedTask) {
+      setEditorState(
+        EditorState.createWithContent(
+          ContentState.createFromBlockArray(
+            convertFromHTML(selectedTask.description),
+          ),
         ),
-      ),
-    );
+      );
+    }
   }, [selectedTask]);
 
   const { mutateAsync: updateTask } = useMutation(update, {
@@ -99,6 +96,8 @@ export const ViewTask = ({
     const markup = draftToHtml(rawContentState);
     await onSubmit('description', markup);
   };
+
+  if (!selectedTask) return null;
 
   return (
     <Drawer
