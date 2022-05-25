@@ -155,6 +155,7 @@ export const ViewTask = ({
             <Box flex={2}>
               <FormLabel htmlFor='description'>Description</FormLabel>
               <RichTextEditor
+                showToolbar={false}
                 editorState={editorState}
                 onEditorStateChange={setEditorState}
                 onContentStateChange={onContentStateChange}

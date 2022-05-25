@@ -16,6 +16,7 @@ import {
   FormControl,
   FormErrorMessage,
 } from '@chakra-ui/react';
+import { RichTextEditor } from '@components/rich-text-editor/rich-text-editor';
 import {
   CategoryType,
   NotificationStatusType,
@@ -26,8 +27,10 @@ import {
 import { create } from '@services/tasks-service';
 import { replaceUnderscores } from '@utils/text-pipes';
 import React from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
+import { convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
 
 type CreateTaskProps = {
   isOpen: boolean;
@@ -53,6 +56,7 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
     handleSubmit,
     register,
     reset,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
 
@@ -65,6 +69,10 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    if (data.description) {
+      data.description = draftToHtml(data.description);
+    }
+
     await createTask(data);
   };
 
@@ -100,6 +108,24 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                 <FormErrorMessage>
                   {errors.title && errors.title.message}
                 </FormErrorMessage>
+              </FormControl>
+
+              <FormControl isInvalid={Boolean(errors.description)} as={Box}>
+                <FormLabel htmlFor='description'>Description</FormLabel>
+                <Controller
+                  name='description'
+                  control={control}
+                  render={({ field }) => {
+                    return (
+                      <RichTextEditor
+                        showToolbar
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder='Enter description'
+                      />
+                    );
+                  }}
+                />
               </FormControl>
 
               <FormControl isInvalid={Boolean(errors.priority)} as={Box}>
@@ -165,11 +191,6 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                     {ReproducibleType.ALWAYS}
                   </option>
                 </Select>
-              </FormControl>
-
-              <FormControl isInvalid={Boolean(errors.description)} as={Box}>
-                <FormLabel htmlFor='description'>Description</FormLabel>
-                <Textarea id='description' {...register('description')} />
               </FormControl>
 
               <FormControl isInvalid={Boolean(errors.assignedToId)} as={Box}>

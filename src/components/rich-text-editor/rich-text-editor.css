@@ -1,22 +1,23 @@
-.editor-wrapper {
-  box-sizing: content-box;
+/* Hide toolbar */
+
+.hide-toolbar-editor {
 }
 
-.demo-editor {
+.hide-toolbar-wrapper {
 }
 
-.rdw-editor-toolbar.rich-text__toolbar {
+.rdw-editor-toolbar.hide-toolbar {
   display: none;
 }
 
-.rdw-editor-wrapper:focus-within .rich-text__toolbar {
+.rdw-editor-wrapper:focus-within .hide-toolbar {
   display: flex;
   border: 1px solid #f1f1f1 !important;
   padding: 5px !important;
   border-radius: 2px !important;
 }
 
-.rdw-editor-wrapper:focus-within .demo-editor {
+.rdw-editor-wrapper:focus-within .hide-toolbar-editor {
   border: 1px solid #f1f1f1 !important;
   padding: 10px !important;
   border-radius: 2px !important;
@@ -25,4 +26,15 @@
 .rdw-editor-wrapper:hover:not(:focus-within) {
   background-color: #edf2f6;
   border-radius: 10px !important;
+}
+
+/* Show toolbar */
+.show-toolbar-editor {
+  border: 1px solid #f1f1f1 !important;
+  padding-left: 15px;
+  padding-right: 15px;
+  min-height: 100px;
+}
+
+.show-toolbar-wrapper {
 }
