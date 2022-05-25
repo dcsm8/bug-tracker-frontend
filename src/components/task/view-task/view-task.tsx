@@ -35,9 +35,6 @@ import {
 import { update } from '@services/tasks-service';
 import { replaceUnderscores } from '@utils/text-pipes';
 import { useMutation, useQueryClient } from 'react-query';
-import { Editor } from 'react-draft-wysiwyg';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import '@components/rich-text-editor/rich-text-editor.css';
 import draftToHtml from 'draftjs-to-html';
 import {
   EditorState,
@@ -46,6 +43,7 @@ import {
   convertToRaw,
 } from 'draft-js';
 import { useEffect, useState } from 'react';
+import { RichTextEditor } from '@components/rich-text-editor/rich-text-editor';
 
 type ViewTaskProps = {
   isOpen: boolean;
@@ -156,11 +154,8 @@ export const ViewTask = ({
           <Flex gap={10}>
             <Box flex={2}>
               <FormLabel htmlFor='description'>Description</FormLabel>
-              <Editor
+              <RichTextEditor
                 editorState={editorState}
-                wrapperClassName='demo-wrapper'
-                editorClassName='demo-editor'
-                toolbarClassName='rich-text__toolbar'
                 onEditorStateChange={setEditorState}
                 onContentStateChange={onContentStateChange}
               />
