@@ -18,14 +18,15 @@
 }
 
 .rdw-editor-wrapper:focus-within .hide-toolbar-editor {
-  border: 1px solid #f1f1f1 !important;
+  border: 1px solid #3182ce !important;
   padding: 10px !important;
-  border-radius: 2px !important;
+  box-shadow: 0 0 0 1px #3182ce;
+  border-radius: 0.375rem !important;
 }
 
-.rdw-editor-wrapper:hover:not(:focus-within) {
+.hide-toolbar-wrapper:hover:not(:focus-within) {
   background-color: #edf2f6;
-  border-radius: 10px !important;
+  border-radius: 7px !important;
 }
 
 /* Show toolbar */
@@ -34,6 +35,13 @@
   padding-left: 15px;
   padding-right: 15px;
   min-height: 100px;
+  border-radius: 0.375rem;
+}
+
+.show-toolbar-editor:focus-within {
+  border: 1px solid #3182ce !important;
+  border-radius: 0.375rem !important;
+  box-shadow: 0 0 0 1px #3182ce;
 }
 
 .show-toolbar-wrapper {
