@@ -158,6 +158,7 @@ export const ViewTask = ({
                 editorState={editorState}
                 onEditorStateChange={setEditorState}
                 onContentStateChange={onContentStateChange}
+                placeholder='Enter description'
               />
             </Box>
             <Box flex={1}>
