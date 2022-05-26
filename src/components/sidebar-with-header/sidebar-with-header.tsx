@@ -249,8 +249,10 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <MenuDivider />
               <MenuItem
                 onClick={() => {
-                  setAccessToken(null);
-                  history.push('/');
+                  if (setAccessToken) {
+                    setAccessToken(null);
+                    history.push('/');
+                  }
                 }}
               >
                 Sign out

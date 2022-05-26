@@ -36,15 +36,11 @@ import { update } from '@services/tasks-service';
 import { replaceUnderscores } from '@utils/text-pipes';
 import { useMutation, useQueryClient } from 'react-query';
 import draftToHtml from 'draftjs-to-html';
-import {
-  EditorState,
-  ContentState,
-  convertFromHTML,
-  convertToRaw,
-} from 'draft-js';
+import { EditorState, convertToRaw } from 'draft-js';
 import { useEffect, useState } from 'react';
 import { RichTextEditor } from '@components/rich-text-editor/rich-text-editor';
 import { useTaskStore } from '@store/task-store';
+import { loadEditorState } from '@utils/load-editor-state';
 
 type ViewTaskProps = {
   isOpen: boolean;
@@ -54,22 +50,14 @@ type ViewTaskProps = {
 
 export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
   const selectedTask = useTaskStore((state) => state.selectedTask);
-
   const queryClient = useQueryClient();
-
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(),
   );
 
   useEffect(() => {
     if (selectedTask && selectedTask.description !== null) {
-      setEditorState(
-        EditorState.createWithContent(
-          ContentState.createFromBlockArray(
-            convertFromHTML(selectedTask.description),
-          ),
-        ),
-      );
+      setEditorState(loadEditorState(selectedTask.description));
     }
   }, [selectedTask]);
 
@@ -80,17 +68,14 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
   });
 
   const onSubmit = async (prop: keyof Task, value) => {
-    if (selectedTask) {
-      const updatedTask: Partial<Task> = {
-        id: selectedTask.id,
-        [prop]: value,
-      };
-      // changeCard(board, cardId, newCard);
-      await updateTask(updatedTask);
-    }
+    const updatedTask: Partial<Task> = {
+      id: selectedTask!.id,
+      [prop]: value,
+    };
+    await updateTask(updatedTask);
   };
 
-  const onContentStateChange = async (contentState) => {
+  const onContentStateChange = async () => {
     const rawContentState = convertToRaw(editorState.getCurrentContent());
 
     const markup = draftToHtml(rawContentState);

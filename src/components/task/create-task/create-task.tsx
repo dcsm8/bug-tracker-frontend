@@ -11,7 +11,6 @@ import {
   FormLabel,
   Input,
   Select,
-  Textarea,
   DrawerFooter,
   FormControl,
   FormErrorMessage,
@@ -29,7 +28,6 @@ import { replaceUnderscores } from '@utils/text-pipes';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
-import { convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 
 type CreateTaskProps = {

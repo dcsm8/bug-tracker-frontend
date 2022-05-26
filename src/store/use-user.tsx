@@ -9,15 +9,15 @@ const getCurrentUser = (accessToken) => {
 interface UserContextInterface {
   user: Partial<User>;
   accessToken: string | null;
-  setAccessToken?: React.Dispatch<React.SetStateAction<string | null>>;
+  setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-const initialState: UserContextInterface = {
+const initialState = {
   user: {},
   accessToken: null,
 };
 
-const UserContext = createContext(initialState);
+const UserContext = createContext<Partial<UserContextInterface>>(initialState);
 
 export function UserProvider({ children }) {
   const [accessToken, setAccessToken] = useState(
