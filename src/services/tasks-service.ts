@@ -66,24 +66,28 @@ export const createBoard = (tasks: Task[]): Board => {
     id: StatusType.BACKLOG,
     cards: backlogTasks,
     title: 'Backlog',
+    color: '#D69900',
   };
 
   const inProgressColumn: Column = {
     id: StatusType.IN_PROGRESS,
     cards: inProgressTasks,
     title: 'In Progress',
+    color: '#7F2DE9',
   };
 
   const testingColumn: Column = {
     id: StatusType.TESTING,
     cards: testingTasks,
     title: 'Testing',
+    color: '#00A6DA',
   };
 
   const completeColumn: Column = {
     id: StatusType.COMPLETE,
     cards: completeTasks,
     title: 'Complete',
+    color: '#3BC057',
   };
 
   const columns: Column[] = [

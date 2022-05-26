@@ -1,0 +1,11 @@
+.react-kanban-card {
+  background-color: #ffffff;
+}
+
+.react-kanban-column {
+  background-color: #f6f6f6;
+  padding: 7px;
+  border-radius: 2px;
+  margin: 10px;
+  border-radius: 7px;
+}
