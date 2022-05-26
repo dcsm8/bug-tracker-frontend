@@ -22,6 +22,7 @@ import {
   useColorModeValue,
   Input,
   EditableInput,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { FiMoreHorizontal, FiTrash } from 'react-icons/fi';
 import {
@@ -41,6 +42,7 @@ import { useEffect, useState } from 'react';
 import { RichTextEditor } from '@components/rich-text-editor/rich-text-editor';
 import { useTaskStore } from '@store/task-store';
 import { loadEditorState } from '@utils/load-editor-state';
+import { DeleteConfirmDialog } from '@components/delete-confirm-dialog/delete-confirm-dialog';
 
 type ViewTaskProps = {
   isOpen: boolean;
@@ -54,6 +56,12 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(),
   );
+
+  const {
+    isOpen: isOpenDelete,
+    onOpen: onOpenDelete,
+    onClose: onCloseDelete,
+  } = useDisclosure();
 
   useEffect(() => {
     if (selectedTask && selectedTask.description !== null) {
@@ -80,6 +88,12 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
 
     const markup = draftToHtml(rawContentState);
     await onSubmit('description', markup);
+  };
+
+  const onDeleteClick = () => {
+    onOpenDelete();
+
+    // onRemoveCard(selectedTask);
   };
 
   if (!selectedTask) return null;
@@ -122,12 +136,15 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
                   variant='outline'
                 />
                 <MenuList fontSize='md'>
-                  <MenuItem
-                    icon={<Icon as={FiTrash} />}
-                    onClick={() => onRemoveCard(selectedTask)}
-                  >
+                  <MenuItem icon={<Icon as={FiTrash} />} onClick={onOpenDelete}>
                     Delete
                   </MenuItem>
+                  <DeleteConfirmDialog
+                    isOpen={isOpenDelete}
+                    onClose={onCloseDelete}
+                    onDelete={() => onRemoveCard(selectedTask)}
+                    title='Delete Task'
+                  />
                 </MenuList>
               </Menu>
             </Box>

@@ -61,9 +61,9 @@ const Home = () => {
   const onRemoveCard = async (card: Task) => {
     const updatedBoard = removeCard(board, { id: card.status }, card);
     setBoard(updatedBoard);
-    await deleteTask(card);
-
     onClose();
+
+    await deleteTask(card);
   };
 
   const openTask = (task: Task) => {
