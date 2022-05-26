@@ -62,7 +62,7 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
   );
 
   useEffect(() => {
-    if (selectedTask) {
+    if (selectedTask && selectedTask.description !== null) {
       setEditorState(
         EditorState.createWithContent(
           ContentState.createFromBlockArray(
