@@ -44,7 +44,14 @@ export const DeleteConfirmDialog = ({
             <Button ref={cancelRef} onClick={onClose}>
               Cancel
             </Button>
-            <Button colorScheme='red' onClick={onDelete} ml={3}>
+            <Button
+              colorScheme='red'
+              onClick={() => {
+                onDelete();
+                onClose();
+              }}
+              ml={3}
+            >
               Delete
             </Button>
           </AlertDialogFooter>
