@@ -90,12 +90,6 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
     await onSubmit('description', markup);
   };
 
-  const onDeleteClick = () => {
-    onOpenDelete();
-
-    // onRemoveCard(selectedTask);
-  };
-
   if (!selectedTask) return null;
 
   return (
@@ -255,9 +249,9 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
                 </Box>
 
                 <Box>
-                  <FormLabel htmlFor='assignedToId'>Responsible</FormLabel>
+                  <FormLabel htmlFor='assignedTo'>Responsible</FormLabel>
                   <Select
-                    id='assignedToId'
+                    id='assignedTo'
                     defaultValue={selectedTask.assignedTo.id}
                   >
                     <option value='1'>David Sánchez</option>

@@ -23,6 +23,7 @@ import {
   PriorityType,
   ReproducibleType,
   StatusType,
+  Task,
 } from '@interfaces/task-interface';
 import { create } from '@services/tasks-service';
 import { replaceUnderscores } from '@utils/text-pipes';
@@ -30,6 +31,7 @@ import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import draftToHtml from 'draftjs-to-html';
+import { User } from '@interfaces/user-interface';
 
 type CreateTaskProps = {
   isOpen: boolean;
@@ -72,7 +74,16 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
       data.description = draftToHtml(data.description);
     }
 
-    await createTask(data);
+    const task: Partial<Task> = {
+      ...data,
+      assignedTo: {
+        id: data.assignedToId,
+        email: '',
+        username: '',
+      },
+    };
+
+    await createTask(task);
   };
 
   const { ref, ...rest } = register('title');
