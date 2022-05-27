@@ -24,6 +24,7 @@
     "react-icons": "^4.3.1",
     "react-query": "^3.38.1",
     "react-router-dom": "^5.2.0",
+    "react-select": "^5.3.2",
     "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
