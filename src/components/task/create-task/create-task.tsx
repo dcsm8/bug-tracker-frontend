@@ -47,7 +47,7 @@ type FormValues = {
   assignedToId: number;
   status: StatusType;
   notificationStatus: NotificationStatusType;
-  area: string;
+  areaId: number;
 };
 
 export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
@@ -84,7 +84,7 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
 
   return (
     <Drawer
-      isOpen={isOpen}
+      isOpen={true}
       placement='right'
       onClose={onClose}
       size='lg'
@@ -114,9 +114,21 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                 </FormErrorMessage>
               </FormControl>
 
-              <FormControl isInvalid={Boolean(errors.area)} as={Box}>
+              <FormControl isInvalid={Boolean(errors.areaId)} as={Box}>
                 <FormLabel htmlFor='area'>Area</FormLabel>
-                <RSelect id='area' options={data} />
+                <Controller
+                  name='areaId'
+                  control={control}
+                  render={({ field }) => {
+                    return (
+                      <RSelect
+                        id='area'
+                        options={data}
+                        onChange={(e) => field.onChange(e!.value)}
+                      />
+                    );
+                  }}
+                />
               </FormControl>
 
               <FormControl isInvalid={Boolean(errors.description)} as={Box}>
