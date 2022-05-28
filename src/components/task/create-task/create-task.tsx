@@ -10,11 +10,11 @@ import {
   Box,
   FormLabel,
   Input,
-  Select,
   DrawerFooter,
   FormControl,
   FormErrorMessage,
   HStack,
+  Select,
 } from '@chakra-ui/react';
 import { RichTextEditor } from '@components/rich-text-editor/rich-text-editor';
 import {
@@ -28,8 +28,10 @@ import { create } from '@services/tasks-service';
 import { replaceUnderscores } from '@utils/text-pipes';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import draftToHtml from 'draftjs-to-html';
+import { findAll } from '@services/areas-service';
+import RSelect from 'react-select';
 
 type CreateTaskProps = {
   isOpen: boolean;
@@ -45,11 +47,14 @@ type FormValues = {
   assignedToId: number;
   status: StatusType;
   notificationStatus: NotificationStatusType;
+  area: string;
 };
 
 export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
   const queryClient = useQueryClient();
   const firstField = React.useRef<any>();
+
+  const { data } = useQuery(['areas'], findAll);
 
   const {
     handleSubmit,
@@ -107,6 +112,11 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                 <FormErrorMessage>
                   {errors.title && errors.title.message}
                 </FormErrorMessage>
+              </FormControl>
+
+              <FormControl isInvalid={Boolean(errors.area)} as={Box}>
+                <FormLabel htmlFor='area'>Area</FormLabel>
+                <RSelect id='area' options={data} />
               </FormControl>
 
               <FormControl isInvalid={Boolean(errors.description)} as={Box}>
