@@ -32,6 +32,11 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import draftToHtml from 'draftjs-to-html';
 import { findAll } from '@services/areas-service';
 import RSelect from 'react-select';
+import {
+  CategoryOptions,
+  PriorityOptions,
+  ReproducibleOptions,
+} from '@services/options-service';
 
 type CreateTaskProps = {
   isOpen: boolean;
@@ -54,7 +59,11 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
   const queryClient = useQueryClient();
   const firstField = React.useRef<any>();
 
-  const { data } = useQuery(['areas'], findAll);
+  const { data: areaOptions } = useQuery(['areas'], findAll);
+
+  const priorityOptions = PriorityOptions();
+  const categoryOptions = CategoryOptions();
+  const reproducibleOptions = ReproducibleOptions();
 
   const {
     handleSubmit,
@@ -123,7 +132,7 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                     return (
                       <RSelect
                         id='area'
-                        options={data}
+                        options={areaOptions}
                         onChange={(e) => field.onChange(e!.value)}
                       />
                     );
@@ -152,44 +161,38 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
               <HStack gap={4}>
                 <FormControl isInvalid={Boolean(errors.priority)} as={Box}>
                   <FormLabel htmlFor='priority'>Select Priority</FormLabel>
-                  <Select
-                    id='priority'
-                    defaultValue={PriorityType.NONE}
-                    {...register('priority')}
-                  >
-                    <option value={PriorityType.NONE}>
-                      {PriorityType.NONE}
-                    </option>
-                    <option value={PriorityType.LOW}>{PriorityType.LOW}</option>
-                    <option value={PriorityType.NORMAL}>
-                      {PriorityType.NORMAL}
-                    </option>
-                    <option value={PriorityType.HIGH}>
-                      {PriorityType.HIGH}
-                    </option>
-                    <option value={PriorityType.CRITICAL}>
-                      {PriorityType.CRITICAL}
-                    </option>
-                  </Select>
+                  <Controller
+                    name='priority'
+                    control={control}
+                    render={({ field }) => {
+                      return (
+                        <RSelect
+                          id='priority'
+                          defaultValue={priorityOptions[0]}
+                          options={priorityOptions}
+                          onChange={(e) => field.onChange(e!.value)}
+                        />
+                      );
+                    }}
+                  />
                 </FormControl>
 
                 <FormControl isInvalid={Boolean(errors.category)} as={Box}>
                   <FormLabel htmlFor='category'>Select Category</FormLabel>
-                  <Select
-                    id='category'
-                    defaultValue={CategoryType.FEATURE}
-                    {...register('category')}
-                  >
-                    <option value={CategoryType.FEATURE}>
-                      {CategoryType.FEATURE}
-                    </option>
-                    <option value={CategoryType.ISSUE}>
-                      {CategoryType.ISSUE}
-                    </option>
-                    <option value={CategoryType.INQUIRY}>
-                      {CategoryType.INQUIRY}
-                    </option>
-                  </Select>
+                  <Controller
+                    name='category'
+                    control={control}
+                    render={({ field }) => {
+                      return (
+                        <RSelect
+                          id='category'
+                          defaultValue={categoryOptions[0]}
+                          options={categoryOptions}
+                          onChange={(e) => field.onChange(e!.value)}
+                        />
+                      );
+                    }}
+                  />
                 </FormControl>
               </HStack>
 
@@ -198,27 +201,20 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                   <FormLabel htmlFor='reproducible'>
                     Select Reproducible
                   </FormLabel>
-                  <Select
-                    id='reproducible'
-                    defaultValue={ReproducibleType.NOT_APPLICABLE}
-                    {...register('reproducible')}
-                  >
-                    <option value={ReproducibleType.NOT_APPLICABLE}>
-                      {replaceUnderscores(ReproducibleType.NOT_APPLICABLE)}
-                    </option>
-                    <option value={ReproducibleType.UNABLE}>
-                      {ReproducibleType.UNABLE}
-                    </option>
-                    <option value={ReproducibleType.RARELY}>
-                      {ReproducibleType.RARELY}
-                    </option>
-                    <option value={ReproducibleType.SOMETIMES}>
-                      {ReproducibleType.SOMETIMES}
-                    </option>
-                    <option value={ReproducibleType.ALWAYS}>
-                      {ReproducibleType.ALWAYS}
-                    </option>
-                  </Select>
+                  <Controller
+                    name='reproducible'
+                    control={control}
+                    render={({ field }) => {
+                      return (
+                        <RSelect
+                          id='reproducible'
+                          defaultValue={reproducibleOptions[0]}
+                          options={reproducibleOptions}
+                          onChange={(e) => field.onChange(e!.value)}
+                        />
+                      );
+                    }}
+                  />
                 </FormControl>
 
                 <FormControl isInvalid={Boolean(errors.assignedToId)} as={Box}>
