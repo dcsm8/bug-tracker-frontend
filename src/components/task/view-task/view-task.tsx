@@ -26,7 +26,7 @@ import {
 import { FiMoreHorizontal, FiTrash } from 'react-icons/fi';
 import { Task } from '@interfaces/task-interface';
 import { update } from '@services/tasks-service';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import draftToHtml from 'draftjs-to-html';
 import { EditorState, convertToRaw } from 'draft-js';
 import { useEffect, useState } from 'react';
@@ -42,6 +42,7 @@ import {
   ResponsibleOptions,
 } from '@services/options-service';
 import { SelectOption } from '@interfaces/select-option.interface';
+import { findAll } from '@services/areas-service';
 
 type ViewTaskProps = {
   isOpen: boolean;
@@ -61,6 +62,11 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
     onOpen: onOpenDelete,
     onClose: onCloseDelete,
   } = useDisclosure();
+
+  const { data: areaOptions, isLoading: isLoadingAreas } = useQuery(
+    ['areas'],
+    findAll,
+  );
 
   useEffect(() => {
     if (selectedTask && selectedTask.description !== null) {
@@ -183,6 +189,22 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
                       onChangeSelect(e, triggeredAction, 'priority')
                     }
                     isClearable
+                  />
+                </Box>
+                <Box>
+                  <FormLabel htmlFor='area'>Area</FormLabel>
+                  <Select
+                    id='area'
+                    options={areaOptions}
+                    defaultValue={areaOptions?.filter(
+                      (option) =>
+                        parseInt(option.value) === selectedTask.area?.id,
+                    )}
+                    onChange={(e, triggeredAction) =>
+                      onChangeSelect(e, triggeredAction, 'area')
+                    }
+                    isClearable
+                    isLoading={isLoadingAreas}
                   />
                 </Box>
                 <Box>
