@@ -27,7 +27,6 @@ import {
 import { FiMoreHorizontal, FiTrash } from 'react-icons/fi';
 import {
   CategoryType,
-  NotificationStatusType,
   PriorityType,
   ReproducibleType,
   StatusType,
@@ -255,26 +254,6 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
                     defaultValue={selectedTask.assignedTo.id}
                   >
                     <option value='1'>David Sánchez</option>
-                  </Select>
-                </Box>
-
-                <Box>
-                  <FormLabel htmlFor='notificationStatus'>
-                    Notification Status
-                  </FormLabel>
-                  <Select
-                    id='notificationStatus'
-                    defaultValue={selectedTask.notificationStatus}
-                    onChange={(e) =>
-                      onSubmit('notificationStatus', e.target.value)
-                    }
-                  >
-                    <option value={NotificationStatusType.NOT_NOTIFIED}>
-                      {replaceUnderscores(NotificationStatusType.NOT_NOTIFIED)}
-                    </option>
-                    <option value={NotificationStatusType.NOTIFIED}>
-                      {NotificationStatusType.NOTIFIED}
-                    </option>
                   </Select>
                 </Box>
               </Stack>
