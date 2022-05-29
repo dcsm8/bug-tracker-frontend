@@ -132,6 +132,7 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                         id='area'
                         options={areaOptions}
                         onChange={(e) => field.onChange(e!.value)}
+                        isClearable
                       />
                     );
                   }}
@@ -168,6 +169,7 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                           {...field}
                           id='priority'
                           options={PriorityOptions}
+                          isClearable
                         />
                       );
                     }}
@@ -185,6 +187,7 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                           {...field}
                           id='category'
                           options={CategoryOptions}
+                          isClearable
                         />
                       );
                     }}
@@ -206,6 +209,7 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                           {...field}
                           id='reproducible'
                           options={ReproducibleOptions}
+                          isClearable
                         />
                       );
                     }}
@@ -225,6 +229,7 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                           {...field}
                           id='assignedToId'
                           options={ResponsibleOptions}
+                          isClearable
                         />
                       );
                     }}

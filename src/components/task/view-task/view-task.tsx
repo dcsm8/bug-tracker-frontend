@@ -7,7 +7,6 @@ import {
   Stack,
   Box,
   FormLabel,
-  Select,
   IconButton,
   Menu,
   MenuButton,
@@ -25,15 +24,8 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { FiMoreHorizontal, FiTrash } from 'react-icons/fi';
-import {
-  CategoryType,
-  PriorityType,
-  ReproducibleType,
-  StatusType,
-  Task,
-} from '@interfaces/task-interface';
+import { Task } from '@interfaces/task-interface';
 import { update } from '@services/tasks-service';
-import { replaceUnderscores } from '@utils/text-pipes';
 import { useMutation, useQueryClient } from 'react-query';
 import draftToHtml from 'draftjs-to-html';
 import { EditorState, convertToRaw } from 'draft-js';
@@ -42,6 +34,14 @@ import { RichTextEditor } from '@components/rich-text-editor/rich-text-editor';
 import { useTaskStore } from '@store/task-store';
 import { loadEditorState } from '@utils/load-editor-state';
 import { DeleteConfirmDialog } from '@components/delete-confirm-dialog/delete-confirm-dialog';
+import Select, { ActionMeta, SingleValue } from 'react-select';
+import {
+  CategoryOptions,
+  PriorityOptions,
+  ReproducibleOptions,
+  ResponsibleOptions,
+} from '@services/options-service';
+import { SelectOption } from '@interfaces/select-option.interface';
 
 type ViewTaskProps = {
   isOpen: boolean;
@@ -63,7 +63,7 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
   } = useDisclosure();
 
   useEffect(() => {
-    if (selectedTask?.description) {
+    if (selectedTask && selectedTask.description !== null) {
       setEditorState(loadEditorState(selectedTask.description));
     }
   }, [selectedTask]);
@@ -80,6 +80,19 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
       [prop]: value,
     };
     await updateTask(updatedTask);
+  };
+
+  const onChangeSelect = async (
+    e: SingleValue<SelectOption>,
+    triggeredAction: ActionMeta<SelectOption>,
+    prop: keyof Task,
+  ) => {
+    let value;
+    value = e?.value;
+    if (triggeredAction.action === 'clear') {
+      value = null;
+    }
+    onSubmit(prop, value);
   };
 
   const onContentStateChange = async () => {
@@ -159,102 +172,58 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
             <Box flex={1}>
               <Stack spacing='24px'>
                 <Box>
-                  <FormLabel htmlFor='status'>Status</FormLabel>
-                  <Select
-                    id='status'
-                    defaultValue={selectedTask.status}
-                    onChange={(e) => onSubmit('status', e.target.value)}
-                  >
-                    <option value={StatusType.BACKLOG}>
-                      {StatusType.BACKLOG}
-                    </option>
-                    <option value={StatusType.IN_PROGRESS}>
-                      {replaceUnderscores(StatusType.IN_PROGRESS)}
-                    </option>
-                    <option value={StatusType.TESTING}>
-                      {StatusType.TESTING}
-                    </option>
-                    <option value={StatusType.COMPLETE}>
-                      {StatusType.COMPLETE}
-                    </option>
-                  </Select>
-                </Box>
-
-                <Box>
                   <FormLabel htmlFor='priority'>Priority</FormLabel>
                   <Select
                     id='priority'
-                    defaultValue={selectedTask.priority}
-                    onChange={(e) => onSubmit('priority', e.target.value)}
-                  >
-                    <option value={PriorityType.NONE}>
-                      {PriorityType.NONE}
-                    </option>
-                    <option value={PriorityType.LOW}>{PriorityType.LOW}</option>
-                    <option value={PriorityType.NORMAL}>
-                      {PriorityType.NORMAL}
-                    </option>
-                    <option value={PriorityType.HIGH}>
-                      {PriorityType.HIGH}
-                    </option>
-                    <option value={PriorityType.CRITICAL}>
-                      {PriorityType.CRITICAL}
-                    </option>
-                  </Select>
+                    options={PriorityOptions}
+                    defaultValue={PriorityOptions.filter(
+                      (option) => option.value === selectedTask.priority,
+                    )}
+                    onChange={(e, triggeredAction) =>
+                      onChangeSelect(e, triggeredAction, 'priority')
+                    }
+                    isClearable
+                  />
                 </Box>
-
                 <Box>
                   <FormLabel htmlFor='category'>Category</FormLabel>
                   <Select
                     id='category'
-                    defaultValue={selectedTask.category}
-                    onChange={(e) => onSubmit('category', e.target.value)}
-                  >
-                    <option value={CategoryType.FEATURE}>
-                      {CategoryType.FEATURE}
-                    </option>
-                    <option value={CategoryType.ISSUE}>
-                      {CategoryType.ISSUE}
-                    </option>
-                    <option value={CategoryType.INQUIRY}>
-                      {CategoryType.INQUIRY}
-                    </option>
-                  </Select>
+                    options={CategoryOptions}
+                    defaultValue={CategoryOptions.filter(
+                      (option) => option.value === selectedTask.category,
+                    )}
+                    onChange={(e, triggeredAction) =>
+                      onChangeSelect(e, triggeredAction, 'category')
+                    }
+                    isClearable
+                  />
                 </Box>
-
                 <Box>
                   <FormLabel htmlFor='reproducible'>Reproducible</FormLabel>
                   <Select
                     id='reproducible'
-                    defaultValue={selectedTask.reproducible}
-                    onChange={(e) => onSubmit('reproducible', e.target.value)}
-                  >
-                    <option value={ReproducibleType.NOT_APPLICABLE}>
-                      {replaceUnderscores(ReproducibleType.NOT_APPLICABLE)}
-                    </option>
-                    <option value={ReproducibleType.UNABLE}>
-                      {ReproducibleType.UNABLE}
-                    </option>
-                    <option value={ReproducibleType.RARELY}>
-                      {ReproducibleType.RARELY}
-                    </option>
-                    <option value={ReproducibleType.SOMETIMES}>
-                      {ReproducibleType.SOMETIMES}
-                    </option>
-                    <option value={ReproducibleType.ALWAYS}>
-                      {ReproducibleType.ALWAYS}
-                    </option>
-                  </Select>
+                    options={ReproducibleOptions}
+                    defaultValue={ReproducibleOptions.filter(
+                      (option) => option.value === selectedTask.reproducible,
+                    )}
+                    onChange={(e, triggeredAction) =>
+                      onChangeSelect(e, triggeredAction, 'reproducible')
+                    }
+                    isClearable
+                  />
                 </Box>
-
                 <Box>
-                  <FormLabel htmlFor='assignedTo'>Responsible</FormLabel>
+                  <FormLabel htmlFor='assignedTo'>Assigned To</FormLabel>
                   <Select
                     id='assignedTo'
-                    defaultValue={selectedTask.assignedTo?.id}
-                  >
-                    <option value='1'>David Sánchez</option>
-                  </Select>
+                    options={ResponsibleOptions}
+                    defaultValue={ResponsibleOptions.filter(
+                      (option) =>
+                        parseInt(option.value) === selectedTask.assignedTo?.id,
+                    )}
+                    isClearable
+                  />
                 </Box>
               </Stack>
             </Box>
