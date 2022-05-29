@@ -87,11 +87,11 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
     await createTask(createTaskDto);
   };
 
-  const { ref, ...rest } = register('title');
+  const { ref, ...rest } = register('title', { required: 'Title is required' });
 
   return (
     <Drawer
-      isOpen={true}
+      isOpen={isOpen}
       placement='right'
       onClose={onClose}
       size='lg'

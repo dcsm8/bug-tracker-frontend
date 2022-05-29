@@ -63,7 +63,7 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
   } = useDisclosure();
 
   useEffect(() => {
-    if (selectedTask && selectedTask.description !== null) {
+    if (selectedTask?.description) {
       setEditorState(loadEditorState(selectedTask.description));
     }
   }, [selectedTask]);
@@ -251,7 +251,7 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
                   <FormLabel htmlFor='assignedTo'>Responsible</FormLabel>
                   <Select
                     id='assignedTo'
-                    defaultValue={selectedTask.assignedTo.id}
+                    defaultValue={selectedTask.assignedTo?.id}
                   >
                     <option value='1'>David Sánchez</option>
                   </Select>

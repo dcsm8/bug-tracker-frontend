@@ -1,16 +1,18 @@
+import { Area } from './area-interface';
 import { User } from './user-interface';
 
 export interface Task {
-  position: number;
   id: number;
+  position: number;
   title: string;
-  priority: PriorityType;
-  status: StatusType;
-  category: CategoryType;
-  reproducible: ReproducibleType;
-  description: string;
   createdBy: User;
-  assignedTo: User;
+  status: StatusType;
+  priority?: PriorityType;
+  category?: CategoryType;
+  reproducible?: ReproducibleType;
+  description?: string;
+  area?: Area;
+  assignedTo?: User;
   createdAt: Date;
   updatedAt: Date;
 }
