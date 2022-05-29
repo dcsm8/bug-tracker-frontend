@@ -92,6 +92,9 @@ const Home = () => {
       minW='270px'
       onClick={() => openTask(task)}
     >
+      <Text fontSize='sm' fontWeight='semibold' color='gray.500'>
+        {task.area?.name}
+      </Text>
       <Text fontSize='md' fontWeight='bold'>
         {task.title}
       </Text>
