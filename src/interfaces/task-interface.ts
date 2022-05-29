@@ -17,6 +17,16 @@ export interface Task {
   updatedAt: Date;
 }
 
+export interface CreateTaskDto {
+  title: string;
+  priority?: string;
+  category?: string;
+  reproducible?: string;
+  assignedToId?: number;
+  areaId?: number;
+  description?: string;
+}
+
 export interface UpdatePositionDto {
   backlog: number[];
   in_progress: number[];

@@ -1,5 +1,5 @@
-import { UpdatePositionDto } from './../interfaces/task-interface';
-import { compareTasks } from './../utils/sort';
+import { UpdatePositionDto, CreateTaskDto } from '@interfaces/task-interface';
+import { compareTasks } from '@utils/sort';
 import { Board, Column } from '@interfaces/board-interface';
 import { StatusType, Task } from '@interfaces/task-interface';
 import { apiClient } from './api';
@@ -14,7 +14,7 @@ export const findOne = async (id: number): Promise<Task> => {
   return response.data;
 };
 
-export const create = async (task: Partial<Task>): Promise<Task> => {
+export const create = async (task: CreateTaskDto): Promise<Task> => {
   const response = await apiClient.post<Task>('/tasks', task);
   return response.data;
 };

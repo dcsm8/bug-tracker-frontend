@@ -14,29 +14,23 @@ import {
   FormControl,
   FormErrorMessage,
   HStack,
-  Select,
 } from '@chakra-ui/react';
 import { RichTextEditor } from '@components/rich-text-editor/rich-text-editor';
-import {
-  CategoryType,
-  NotificationStatusType,
-  PriorityType,
-  ReproducibleType,
-  StatusType,
-} from '@interfaces/task-interface';
+import { CreateTaskDto } from '@interfaces/task-interface';
 import { create } from '@services/tasks-service';
-import { replaceUnderscores } from '@utils/text-pipes';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import draftToHtml from 'draftjs-to-html';
 import { findAll } from '@services/areas-service';
-import RSelect from 'react-select';
+import Select from 'react-select';
 import {
   CategoryOptions,
   PriorityOptions,
   ReproducibleOptions,
+  ResponsibleOptions,
 } from '@services/options-service';
+import { SelectOption } from '@interfaces/select-option.interface';
 
 type CreateTaskProps = {
   isOpen: boolean;
@@ -45,14 +39,12 @@ type CreateTaskProps = {
 
 type FormValues = {
   title: string;
-  priority: PriorityType;
-  category: CategoryType;
-  reproducible: ReproducibleType;
   description?: string;
-  assignedToId: number;
-  status: StatusType;
-  notificationStatus: NotificationStatusType;
-  areaId: number;
+  category?: SelectOption;
+  priority?: SelectOption;
+  reproducible?: SelectOption;
+  assignedToId?: SelectOption;
+  areaId?: SelectOption;
 };
 
 export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
@@ -60,10 +52,6 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
   const firstField = React.useRef<any>();
 
   const { data: areaOptions } = useQuery(['areas'], findAll);
-
-  const priorityOptions = PriorityOptions();
-  const categoryOptions = CategoryOptions();
-  const reproducibleOptions = ReproducibleOptions();
 
   const {
     handleSubmit,
@@ -86,7 +74,17 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
       data.description = draftToHtml(data.description);
     }
 
-    await createTask(data);
+    const createTaskDto: CreateTaskDto = {
+      title: data.title,
+      priority: data.priority?.value,
+      category: data.category?.value,
+      reproducible: data.reproducible?.value,
+      assignedToId: data.assignedToId && parseInt(data.assignedToId.value),
+      areaId: data.assignedToId && parseInt(data.assignedToId.value),
+      description: data.description,
+    };
+
+    await createTask(createTaskDto);
   };
 
   const { ref, ...rest } = register('title');
@@ -130,7 +128,7 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                   control={control}
                   render={({ field }) => {
                     return (
-                      <RSelect
+                      <Select
                         id='area'
                         options={areaOptions}
                         onChange={(e) => field.onChange(e!.value)}
@@ -166,11 +164,10 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                     control={control}
                     render={({ field }) => {
                       return (
-                        <RSelect
+                        <Select
+                          {...field}
                           id='priority'
-                          defaultValue={priorityOptions[0]}
-                          options={priorityOptions}
-                          onChange={(e) => field.onChange(e!.value)}
+                          options={PriorityOptions}
                         />
                       );
                     }}
@@ -184,11 +181,10 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                     control={control}
                     render={({ field }) => {
                       return (
-                        <RSelect
+                        <Select
+                          {...field}
                           id='category'
-                          defaultValue={categoryOptions[0]}
-                          options={categoryOptions}
-                          onChange={(e) => field.onChange(e!.value)}
+                          options={CategoryOptions}
                         />
                       );
                     }}
@@ -206,11 +202,10 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                     control={control}
                     render={({ field }) => {
                       return (
-                        <RSelect
+                        <Select
+                          {...field}
                           id='reproducible'
-                          defaultValue={reproducibleOptions[0]}
-                          options={reproducibleOptions}
-                          onChange={(e) => field.onChange(e!.value)}
+                          options={ReproducibleOptions}
                         />
                       );
                     }}
@@ -221,27 +216,22 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                   <FormLabel htmlFor='assignedToId'>
                     Select Responsible
                   </FormLabel>
-                  <Select
-                    id='assignedToId'
-                    defaultValue='1'
-                    {...register('assignedToId', { valueAsNumber: true })}
-                  >
-                    <option value='1'>David Sánchez</option>
-                  </Select>
+                  <Controller
+                    name='assignedToId'
+                    control={control}
+                    render={({ field }) => {
+                      return (
+                        <Select
+                          {...field}
+                          id='assignedToId'
+                          options={ResponsibleOptions}
+                        />
+                      );
+                    }}
+                  />
                 </FormControl>
               </HStack>
             </Stack>
-
-            <input
-              type='hidden'
-              {...register('status')}
-              value={StatusType.BACKLOG}
-            />
-            <input
-              type='hidden'
-              {...register('notificationStatus')}
-              value={NotificationStatusType.NOT_NOTIFIED}
-            />
           </form>
         </DrawerBody>
 

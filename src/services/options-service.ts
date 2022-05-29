@@ -3,49 +3,26 @@ import {
   PriorityType,
   ReproducibleType,
 } from '@interfaces/task-interface';
-import { SelectOption } from '@interfaces/select-option.interface';
 import { replaceUnderscores } from '@utils/text-pipes';
 
-export const PriorityOptions = (): SelectOption[] => {
-  const options: SelectOption[] = [];
+export const PriorityOptions = Object.keys(PriorityType).map((key) => ({
+  label: replaceUnderscores(PriorityType[key]),
+  value: PriorityType[key],
+}));
 
-  for (let value in PriorityType) {
-    const option: PriorityType = PriorityType[value] as PriorityType;
-    options.push({
-      label: replaceUnderscores(option),
-      value: option,
-    });
-  }
+export const CategoryOptions = Object.keys(CategoryType).map((key) => ({
+  label: replaceUnderscores(CategoryType[key]),
+  value: CategoryType[key],
+}));
 
-  return options;
-};
+export const ReproducibleOptions = Object.keys(ReproducibleType).map((key) => ({
+  label: replaceUnderscores(ReproducibleType[key]),
+  value: ReproducibleType[key],
+}));
 
-export const CategoryOptions = (): SelectOption[] => {
-  const options: SelectOption[] = [];
-
-  for (let value in CategoryType) {
-    const option: CategoryType = CategoryType[value] as CategoryType;
-    options.push({
-      label: replaceUnderscores(option),
-      value: option,
-    });
-  }
-
-  return options;
-};
-
-export const ReproducibleOptions = (): SelectOption[] => {
-  const options: SelectOption[] = [];
-
-  for (let value in ReproducibleType) {
-    const option: ReproducibleType = ReproducibleType[
-      value
-    ] as ReproducibleType;
-    options.push({
-      label: replaceUnderscores(option),
-      value: option,
-    });
-  }
-
-  return options;
-};
+export const ResponsibleOptions = [
+  {
+    label: 'David Sánchez',
+    value: '1',
+  },
+];
