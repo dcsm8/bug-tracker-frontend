@@ -57,7 +57,11 @@ const Home = () => {
     const updatedBoard = moveCard(board, source, destination);
     setBoard(updatedBoard);
 
-    const updatedPositions = getPositions(updatedBoard);
+    const updatedPositions = getPositions(
+      updatedBoard,
+      source.fromColumnId,
+      destination.toColumnId,
+    );
     await updateTaskPositions(updatedPositions);
   };
 

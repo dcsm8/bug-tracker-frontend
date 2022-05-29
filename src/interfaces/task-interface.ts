@@ -32,6 +32,8 @@ export interface UpdatePositionDto {
   in_progress: number[];
   testing: number[];
   complete: number[];
+  sourceColumn: StatusType;
+  destinationColumn: StatusType;
 }
 
 export enum CategoryType {

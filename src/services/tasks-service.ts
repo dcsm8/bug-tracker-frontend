@@ -104,12 +104,18 @@ export const createBoard = (tasks: Task[]): Board => {
   return board;
 };
 
-export const getPositions = (board: Board): UpdatePositionDto => {
+export const getPositions = (
+  board: Board,
+  sourceColumn: StatusType,
+  destinationColumn: StatusType,
+): UpdatePositionDto => {
   const positions: UpdatePositionDto = {
     [StatusType.BACKLOG]: [...board.columns[0].cards.map((obj) => obj.id)],
     [StatusType.IN_PROGRESS]: [...board.columns[1].cards.map((obj) => obj.id)],
     [StatusType.TESTING]: [...board.columns[2].cards.map((obj) => obj.id)],
     [StatusType.COMPLETE]: [...board.columns[3].cards.map((obj) => obj.id)],
+    sourceColumn: sourceColumn,
+    destinationColumn: destinationColumn,
   };
 
   return positions;
