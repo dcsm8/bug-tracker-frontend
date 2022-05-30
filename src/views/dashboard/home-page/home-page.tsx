@@ -3,6 +3,7 @@ import '@asseinfo/react-kanban/dist/styles.css';
 import {
   Alert,
   AlertIcon,
+  Avatar,
   Box,
   Flex,
   HStack,
@@ -101,27 +102,44 @@ const Home = () => {
       <Text fontSize='md' fontWeight='bold'>
         {task.title}
       </Text>
-      <ShowIf condition={task.priority === PriorityType.LOW}>
-        <Box mt={2} borderRadius={3} bg={PriorityStyles.low.bg} px={2}>
-          <Text textColor={PriorityStyles.low.textColor} fontSize='xs'>
-            Low
-          </Text>
-        </Box>
-      </ShowIf>
-      <ShowIf condition={task.priority === PriorityType.MID}>
-        <Box mt={2} borderRadius={3} bg={PriorityStyles.mid.bg} px={2}>
-          <Text textColor={PriorityStyles.mid.textColor} fontSize='xs'>
-            Mid
-          </Text>
-        </Box>
-      </ShowIf>
-      <ShowIf condition={task.priority === PriorityType.HIGH}>
-        <Box mt={2} borderRadius={3} bg={PriorityStyles.high.bg} px={2}>
-          <Text textColor={PriorityStyles.high.textColor} fontSize='xs'>
-            High
-          </Text>
-        </Box>
-      </ShowIf>
+      <HStack mt={task.assignedTo || task.priority ? 3 : 0}>
+        <ShowIf condition={task.assignedTo !== null}>
+          <Avatar size='xs' name={task.assignedTo?.fullName} />
+        </ShowIf>
+        <ShowIf condition={task.priority === PriorityType.LOW}>
+          <Box mt={2} borderRadius={3} bg={PriorityStyles.low.bg} px={2}>
+            <Text
+              textColor={PriorityStyles.low.textColor}
+              fontSize='xs'
+              fontWeight='bold'
+            >
+              Low
+            </Text>
+          </Box>
+        </ShowIf>
+        <ShowIf condition={task.priority === PriorityType.MID}>
+          <Box mt={2} borderRadius={3} bg={PriorityStyles.mid.bg} px={2}>
+            <Text
+              textColor={PriorityStyles.mid.textColor}
+              fontSize='xs'
+              fontWeight='bold'
+            >
+              Mid
+            </Text>
+          </Box>
+        </ShowIf>
+        <ShowIf condition={task.priority === PriorityType.HIGH}>
+          <Box mt={2} borderRadius={3} bg={PriorityStyles.high.bg} px={2}>
+            <Text
+              textColor={PriorityStyles.high.textColor}
+              fontSize='xs'
+              fontWeight='bold'
+            >
+              High
+            </Text>
+          </Box>
+        </ShowIf>
+      </HStack>
     </Flex>
   );
 
