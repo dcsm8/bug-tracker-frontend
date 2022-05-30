@@ -67,6 +67,7 @@ export const createBoard = (tasks: Task[]): Board => {
     cards: backlogTasks,
     title: 'Backlog',
     color: '#D69900',
+    labelBg: '#DFB23D',
   };
 
   const inProgressColumn: Column = {
@@ -74,6 +75,7 @@ export const createBoard = (tasks: Task[]): Board => {
     cards: inProgressTasks,
     title: 'In Progress',
     color: '#7F2DE9',
+    labelBg: '#9F5EEE',
   };
 
   const testingColumn: Column = {
@@ -81,6 +83,7 @@ export const createBoard = (tasks: Task[]): Board => {
     cards: testingTasks,
     title: 'Testing',
     color: '#00A6DA',
+    labelBg: '#3DBBE3',
   };
 
   const completeColumn: Column = {
@@ -88,6 +91,7 @@ export const createBoard = (tasks: Task[]): Board => {
     cards: completeTasks,
     title: 'Complete',
     color: '#3BC057',
+    labelBg: '#69CE7E',
   };
 
   const columns: Column[] = [

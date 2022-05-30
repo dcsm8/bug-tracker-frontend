@@ -7,5 +7,6 @@ export interface Column {
   id: number | string;
   color: string;
   title: string;
+  labelBg: string;
   cards: Task[];
 }

@@ -7,12 +7,12 @@ import {
   Flex,
   HStack,
   Spinner,
-  Tag,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
+import { ShowIf } from '@components/show-if/show-if';
 import { ViewTask } from '@components/task/view-task/view-task';
-import { Task } from '@interfaces/task-interface';
+import { PriorityStyles, PriorityType, Task } from '@interfaces/task-interface';
 import {
   createBoard,
   findAll,
@@ -82,6 +82,7 @@ const Home = () => {
 
   const renderCard = (task: Task, { dragging }) => (
     <Flex
+      align='start'
       mt='10px'
       dragging={dragging}
       flexDirection='column'
@@ -100,17 +101,38 @@ const Home = () => {
       <Text fontSize='md' fontWeight='bold'>
         {task.title}
       </Text>
+      <ShowIf condition={task.priority === PriorityType.LOW}>
+        <Box mt={2} borderRadius={3} bg={PriorityStyles.low.bg} px={2}>
+          <Text textColor={PriorityStyles.low.textColor} fontSize='xs'>
+            Low
+          </Text>
+        </Box>
+      </ShowIf>
+      <ShowIf condition={task.priority === PriorityType.MID}>
+        <Box mt={2} borderRadius={3} bg={PriorityStyles.mid.bg} px={2}>
+          <Text textColor={PriorityStyles.mid.textColor} fontSize='xs'>
+            Mid
+          </Text>
+        </Box>
+      </ShowIf>
+      <ShowIf condition={task.priority === PriorityType.HIGH}>
+        <Box mt={2} borderRadius={3} bg={PriorityStyles.high.bg} px={2}>
+          <Text textColor={PriorityStyles.high.textColor} fontSize='xs'>
+            High
+          </Text>
+        </Box>
+      </ShowIf>
     </Flex>
   );
 
-  const renderColumnHeader = ({ title, color, cards }) => (
+  const renderColumnHeader = ({ title, color, cards, labelBg }) => (
     <Box bg={color} p='6px 12px' borderRadius='7px' maxW='270px' minW='270px'>
       <HStack>
         <Text fontSize='sm' fontWeight='semibold' color='white'>
           {title}
         </Text>
-        <Box ml={2}>
-          <Text fontSize='sm' fontWeight='semibold' color='white'>
+        <Box bg={labelBg} px='5px' borderRadius={4}>
+          <Text fontSize='small' fontWeight='semibold' color='white'>
             {cards.length}
           </Text>
         </Box>

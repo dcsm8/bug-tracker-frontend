@@ -51,12 +51,25 @@ export enum ReproducibleType {
 }
 
 export enum PriorityType {
-  NONE = 'none',
   LOW = 'low',
-  NORMAL = 'normal',
+  MID = 'mid',
   HIGH = 'high',
-  CRITICAL = 'critical',
 }
+
+export const PriorityStyles = {
+  [PriorityType.LOW]: {
+    bg: '#EAEEF4',
+    textColor: '#93A3BA',
+  },
+  [PriorityType.MID]: {
+    bg: '#FCEFDE',
+    textColor: '#E99D2D',
+  },
+  [PriorityType.HIGH]: {
+    bg: '#FCE3DE',
+    textColor: '#E94E2F',
+  },
+};
 
 export enum StatusType {
   BACKLOG = 'backlog',

@@ -194,7 +194,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       <HStack spacing={{ base: '0', md: '6' }}>
         <Button
           leftIcon={<Icon as={FiPlus} color='white' />}
-          colorScheme='teal'
+          colorScheme='blue'
           variant='solid'
           onClick={OnOpenCreateTask}
         >
