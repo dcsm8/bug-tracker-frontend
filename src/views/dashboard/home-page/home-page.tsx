@@ -5,7 +5,9 @@ import {
   AlertIcon,
   Box,
   Flex,
+  HStack,
   Spinner,
+  Tag,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -101,11 +103,18 @@ const Home = () => {
     </Flex>
   );
 
-  const renderColumnHeader = ({ title, color }) => (
+  const renderColumnHeader = ({ title, color, cards }) => (
     <Box bg={color} p='6px 12px' borderRadius='7px' maxW='270px' minW='270px'>
-      <Text fontSize='sm' fontWeight='semibold' color='white'>
-        {title}
-      </Text>
+      <HStack>
+        <Text fontSize='sm' fontWeight='semibold' color='white'>
+          {title}
+        </Text>
+        <Box ml={2}>
+          <Text fontSize='sm' fontWeight='semibold' color='white'>
+            {cards.length}
+          </Text>
+        </Box>
+      </HStack>
     </Box>
   );
 
