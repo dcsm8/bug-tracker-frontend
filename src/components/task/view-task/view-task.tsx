@@ -115,7 +115,7 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
       isOpen={isOpen}
       placement='right'
       onClose={onClose}
-      size='lg'
+      size='xl'
       autoFocus={false}
     >
       <DrawerOverlay />
