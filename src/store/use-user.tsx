@@ -2,10 +2,6 @@ import { User } from '@interfaces/user-interface';
 import { parseJwt } from '@utils/local-storage';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-const getCurrentUser = (accessToken) => {
-  return parseJwt(accessToken);
-};
-
 interface UserContextInterface {
   user: Partial<User>;
   accessToken: string | null;
@@ -28,8 +24,10 @@ export function UserProvider({ children }) {
   function handleAccessTokenChange() {
     if (!user.username && accessToken) {
       localStorage.setItem('access_token', accessToken);
-      const user = getCurrentUser(accessToken);
-      setUser(user);
+      const user = parseJwt(accessToken);
+      if (user) {
+        setUser(user);
+      }
     } else if (!accessToken) {
       // Log Out
       localStorage.removeItem('access_token');
