@@ -253,6 +253,9 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
                       Option: AvatarOption,
                       SingleValue: AvatarSingleValue,
                     }}
+                    onChange={(e, triggeredAction) =>
+                      onChangeSelect(e, triggeredAction, 'assignedTo')
+                    }
                   />
                 </Box>
               </Stack>
