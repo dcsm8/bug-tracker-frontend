@@ -3,18 +3,15 @@ import '@asseinfo/react-kanban/dist/styles.css';
 import {
   Alert,
   AlertIcon,
-  Avatar,
   Box,
-  Flex,
   HStack,
   Spinner,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { PriorityLabel } from '@components/priority-label/priority-label';
-import { ShowIf } from '@components/show-if/show-if';
+import { CardTask } from '@components/kanban-board/card-task';
 import { ViewTask } from '@components/task/view-task/view-task';
-import { PriorityStyles, PriorityType, Task } from '@interfaces/task-interface';
+import { Task } from '@interfaces/task-interface';
 import {
   createBoard,
   findAll,
@@ -34,7 +31,7 @@ const Home = () => {
   const queryClient = useQueryClient();
   const [board, setBoard] = useState<Board>({});
 
-  const { isLoading, data, isError } = useQuery(['tasks'], findAll, {
+  const { isLoading, isError } = useQuery(['tasks'], findAll, {
     onSuccess: (data) => {
       setBoard(createBoard(data));
     },
@@ -82,36 +79,6 @@ const Home = () => {
     onOpenViewTask();
   };
 
-  const renderCard = (task: Task, { dragging }) => (
-    <Flex
-      align='start'
-      mt='10px'
-      dragging={dragging}
-      flexDirection='column'
-      p='10px 15px'
-      borderRadius='7px'
-      borderColor='#EFF0F1'
-      bg='white'
-      boxShadow='base'
-      maxW='270px'
-      minW='270px'
-      onClick={() => openTask(task)}
-    >
-      <Text fontSize='sm' fontWeight='semibold' color='gray.500'>
-        {task.area?.name}
-      </Text>
-      <Text fontSize='md' fontWeight='bold'>
-        {task.title}
-      </Text>
-      <HStack mt={task.assignedTo || task.priority ? 3 : 0}>
-        <ShowIf condition={task.assignedTo !== null}>
-          <Avatar size='xs' name={task.assignedTo?.fullName} />
-        </ShowIf>
-        <PriorityLabel task={task} />
-      </HStack>
-    </Flex>
-  );
-
   const renderColumnHeader = ({ title, color, cards, labelBg }) => (
     <Box bg={color} p='6px 12px' borderRadius='7px' maxW='270px' minW='270px'>
       <HStack>
@@ -132,7 +99,9 @@ const Home = () => {
       <Board
         disableColumnDrag
         onCardDragEnd={onCardDragEnd}
-        renderCard={renderCard}
+        renderCard={(task, props) => (
+          <CardTask task={task} openTask={openTask} props={props} />
+        )}
         renderColumnHeader={renderColumnHeader}
       >
         {board}
