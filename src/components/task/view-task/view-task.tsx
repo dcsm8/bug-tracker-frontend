@@ -43,6 +43,10 @@ import {
 } from '@services/options-service';
 import { SelectOption } from '@interfaces/select-option.interface';
 import { findAll } from '@services/areas-service';
+import {
+  AvatarOption,
+  AvatarSingleValue,
+} from '@components/avatar-option/avatar-option';
 
 type ViewTaskProps = {
   isOpen: boolean;
@@ -245,6 +249,10 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
                         parseInt(option.value) === selectedTask.assignedTo?.id,
                     )}
                     isClearable
+                    components={{
+                      Option: AvatarOption,
+                      SingleValue: AvatarSingleValue,
+                    }}
                   />
                 </Box>
               </Stack>

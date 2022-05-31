@@ -31,6 +31,10 @@ import {
   ResponsibleOptions,
 } from '@services/options-service';
 import { SelectOption } from '@interfaces/select-option.interface';
+import {
+  AvatarOption,
+  AvatarSingleValue,
+} from '@components/avatar-option/avatar-option';
 
 type CreateTaskProps = {
   isOpen: boolean;
@@ -230,6 +234,10 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                           id='assignedToId'
                           options={ResponsibleOptions}
                           isClearable
+                          components={{
+                            Option: AvatarOption,
+                            SingleValue: AvatarSingleValue,
+                          }}
                         />
                       );
                     }}
