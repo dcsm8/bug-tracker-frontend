@@ -4,12 +4,11 @@ import {
   Alert,
   AlertIcon,
   Box,
-  HStack,
   Spinner,
-  Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import { CardTask } from '@components/kanban-board/card-task';
+import { ColumnHeader } from '@components/kanban-board/column-header';
 import { ViewTask } from '@components/task/view-task/view-task';
 import { Task } from '@interfaces/task-interface';
 import {
@@ -23,9 +22,9 @@ import { useTaskStore } from '@store/task-store';
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-import './home-page.css';
+import './board-page.css';
 
-const Home = () => {
+export const BoardPage = () => {
   const { isOpen, onOpen: onOpenViewTask, onClose } = useDisclosure();
   const setSelectedTask = useTaskStore((state) => state.setSelectedTask);
   const queryClient = useQueryClient();
@@ -79,21 +78,6 @@ const Home = () => {
     onOpenViewTask();
   };
 
-  const renderColumnHeader = ({ title, color, cards, labelBg }) => (
-    <Box bg={color} p='6px 12px' borderRadius='7px' maxW='270px' minW='270px'>
-      <HStack>
-        <Text fontSize='sm' fontWeight='semibold' color='white'>
-          {title}
-        </Text>
-        <Box bg={labelBg} px='5px' borderRadius={4}>
-          <Text fontSize='small' fontWeight='semibold' color='white'>
-            {cards.length}
-          </Text>
-        </Box>
-      </HStack>
-    </Box>
-  );
-
   return (
     <Box bg='white'>
       <Board
@@ -102,7 +86,7 @@ const Home = () => {
         renderCard={(task, props) => (
           <CardTask task={task} openTask={openTask} props={props} />
         )}
-        renderColumnHeader={renderColumnHeader}
+        renderColumnHeader={ColumnHeader}
       >
         {board}
       </Board>
@@ -110,5 +94,3 @@ const Home = () => {
     </Box>
   );
 };
-
-export default Home;
