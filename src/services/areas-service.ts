@@ -10,6 +10,6 @@ export const findAll = async (): Promise<SelectOption[]> => {
 const getOptions = (areas: Area[]): SelectOption[] => {
   return areas.map((area) => ({
     label: area.name,
-    value: area.id,
+    value: area.id.toString(),
   }));
 };
