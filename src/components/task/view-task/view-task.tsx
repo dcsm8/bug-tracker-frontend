@@ -47,6 +47,7 @@ import {
   AvatarOption,
   AvatarSingleValue,
 } from '@components/avatar-option/avatar-option';
+import { useDebounce } from '@store/use-debounce';
 
 type ViewTaskProps = {
   isOpen: boolean;
@@ -54,12 +55,15 @@ type ViewTaskProps = {
   onRemoveCard: (card: Task) => void;
 };
 
+const DEBOUNCE_DELAY = 1500;
+
 export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
   const selectedTask = useTaskStore((state) => state.selectedTask);
   const queryClient = useQueryClient();
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(),
   );
+  const debouncedEditorState = useDebounce(editorState, DEBOUNCE_DELAY);
 
   const {
     isOpen: isOpenDelete,
@@ -77,6 +81,17 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
       setEditorState(loadEditorState(selectedTask.description));
     }
   }, [selectedTask]);
+
+  useEffect(() => {
+    if (debouncedEditorState) {
+      const rawContentState = convertToRaw(
+        debouncedEditorState.getCurrentContent(),
+      );
+
+      const markup = draftToHtml(rawContentState);
+      onSubmit('description', markup);
+    }
+  }, [debouncedEditorState]);
 
   const { mutateAsync: updateTask } = useMutation(update, {
     onSuccess: () => {
@@ -103,13 +118,6 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
       value = null;
     }
     onSubmit(prop, value);
-  };
-
-  const onContentStateChange = async () => {
-    const rawContentState = convertToRaw(editorState.getCurrentContent());
-
-    const markup = draftToHtml(rawContentState);
-    await onSubmit('description', markup);
   };
 
   if (!selectedTask) return null;
@@ -175,7 +183,6 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
                 showToolbar={false}
                 editorState={editorState}
                 onEditorStateChange={setEditorState}
-                onContentStateChange={onContentStateChange}
                 placeholder='Enter description'
               />
             </Box>
