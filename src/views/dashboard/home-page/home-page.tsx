@@ -11,6 +11,7 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
+import { PriorityLabel } from '@components/priority-label/priority-label';
 import { ShowIf } from '@components/show-if/show-if';
 import { ViewTask } from '@components/task/view-task/view-task';
 import { PriorityStyles, PriorityType, Task } from '@interfaces/task-interface';
@@ -106,39 +107,7 @@ const Home = () => {
         <ShowIf condition={task.assignedTo !== null}>
           <Avatar size='xs' name={task.assignedTo?.fullName} />
         </ShowIf>
-        <ShowIf condition={task.priority === PriorityType.LOW}>
-          <Box mt={2} borderRadius={3} bg={PriorityStyles.low.bg} px={2}>
-            <Text
-              textColor={PriorityStyles.low.textColor}
-              fontSize='xs'
-              fontWeight='bold'
-            >
-              Low
-            </Text>
-          </Box>
-        </ShowIf>
-        <ShowIf condition={task.priority === PriorityType.MID}>
-          <Box mt={2} borderRadius={3} bg={PriorityStyles.mid.bg} px={2}>
-            <Text
-              textColor={PriorityStyles.mid.textColor}
-              fontSize='xs'
-              fontWeight='bold'
-            >
-              Mid
-            </Text>
-          </Box>
-        </ShowIf>
-        <ShowIf condition={task.priority === PriorityType.HIGH}>
-          <Box mt={2} borderRadius={3} bg={PriorityStyles.high.bg} px={2}>
-            <Text
-              textColor={PriorityStyles.high.textColor}
-              fontSize='xs'
-              fontWeight='bold'
-            >
-              High
-            </Text>
-          </Box>
-        </ShowIf>
+        <PriorityLabel task={task} />
       </HStack>
     </Flex>
   );
