@@ -11,6 +11,7 @@ import { CardTask } from '@components/kanban-board/card-task';
 import { ColumnHeader } from '@components/kanban-board/column-header';
 import { ViewTask } from '@components/task/view-task/view-task';
 import { Task } from '@interfaces/task-interface';
+import shallow from 'zustand/shallow';
 import {
   createBoard,
   findAll,
@@ -18,8 +19,8 @@ import {
   remove,
   updatePositions,
 } from '@services/tasks-service';
+import { useBoardStore } from '@store/board-store';
 import { useTaskStore } from '@store/task-store';
-import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import './board-page.css';
@@ -28,7 +29,11 @@ export const BoardPage = () => {
   const { isOpen, onOpen: onOpenViewTask, onClose } = useDisclosure();
   const setSelectedTask = useTaskStore((state) => state.setSelectedTask);
   const queryClient = useQueryClient();
-  const [board, setBoard] = useState<Board>({});
+
+  const [board, setBoard] = useBoardStore(
+    (state) => [state.board, state.setBoard],
+    shallow,
+  );
 
   const { isLoading, isError } = useQuery(['tasks'], findAll, {
     onSuccess: (data) => {

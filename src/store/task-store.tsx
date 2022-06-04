@@ -6,7 +6,7 @@ interface TaskStore {
   setSelectedTask: (task: Task) => void;
 }
 
-export const useTaskStore = create<TaskStore>((set: SetState<TaskStore>) => ({
+export const useTaskStore = create<TaskStore>((set) => ({
   selectedTask: null,
   setSelectedTask: (task) => set(() => ({ selectedTask: task })),
 }));
