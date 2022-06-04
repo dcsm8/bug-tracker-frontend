@@ -22,6 +22,11 @@ import {
   Input,
   EditableInput,
   useDisclosure,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
 } from '@chakra-ui/react';
 import { FiMoreHorizontal, FiTrash } from 'react-icons/fi';
 import { Task } from '@interfaces/task-interface';
@@ -48,6 +53,7 @@ import {
   AvatarSingleValue,
 } from '@components/avatar-option/avatar-option';
 import { useDebounce } from '@store/use-debounce';
+import { AddComment } from './add-comment/add-comment';
 
 type ViewTaskProps = {
   isOpen: boolean;
@@ -60,10 +66,13 @@ const DEBOUNCE_DELAY = 1500;
 export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
   const selectedTask = useTaskStore((state) => state.selectedTask);
   const queryClient = useQueryClient();
-  const [editorState, setEditorState] = useState(() =>
+  const [descriptionEditorState, setDescriptionEditorState] = useState(() =>
     EditorState.createEmpty(),
   );
-  const debouncedEditorState = useDebounce(editorState, DEBOUNCE_DELAY);
+  const debouncedEditorState = useDebounce(
+    descriptionEditorState,
+    DEBOUNCE_DELAY,
+  );
 
   const {
     isOpen: isOpenDelete,
@@ -78,7 +87,7 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
 
   useEffect(() => {
     if (selectedTask && selectedTask.description !== null) {
-      setEditorState(loadEditorState(selectedTask.description));
+      setDescriptionEditorState(loadEditorState(selectedTask.description));
     }
   }, [selectedTask]);
 
@@ -181,10 +190,29 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
               <FormLabel htmlFor='description'>Description</FormLabel>
               <RichTextEditor
                 showToolbar={false}
-                editorState={editorState}
-                onEditorStateChange={setEditorState}
+                editorState={descriptionEditorState}
+                onEditorStateChange={setDescriptionEditorState}
                 placeholder='Enter description'
               />
+
+              <FormLabel htmlFor='description' mt={10}>
+                Activity
+              </FormLabel>
+              <Tabs>
+                <TabList>
+                  <Tab>Comments</Tab>
+                  <Tab>History</Tab>
+                </TabList>
+
+                <TabPanels>
+                  <TabPanel>
+                    <AddComment />
+                  </TabPanel>
+                  <TabPanel>
+                    <p>History here</p>
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
             </Box>
             <Box flex={1}>
               <Stack spacing='24px'>
