@@ -198,7 +198,7 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
               <FormLabel htmlFor='description' mt={10}>
                 Activity
               </FormLabel>
-              <Tabs>
+              <Tabs variant='soft-rounded' colorScheme='green' size='sm'>
                 <TabList>
                   <Tab>Comments</Tab>
                   <Tab>History</Tab>
