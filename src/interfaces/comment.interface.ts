@@ -8,3 +8,9 @@ export interface Comment {
   updatedAt: Date;
   task: number;
 }
+
+export interface CreateCommentDto {
+  user: number;
+  task: number;
+  text: string;
+}
