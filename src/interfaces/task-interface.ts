@@ -1,4 +1,5 @@
 import { Area } from './area-interface';
+import { Comment } from './comment.interface';
 import { User } from './user-interface';
 
 export interface Task {

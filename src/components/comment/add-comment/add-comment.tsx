@@ -30,8 +30,12 @@ export const AddComment = () => {
           showToolbar={focused}
           editorState={commentEditorState}
           onEditorStateChange={setCommentEditorState}
-          placeholder='Enter comment'
+          placeholder='Add comment'
           onFocus={onFocus}
+          wrapperStyle={{
+            border: '1px solid #E2E8F0',
+            padding: focused ? '0px' : '0 10px',
+          }}
         />
         <ShowIf condition={focused}>
           <Box mt={2}>

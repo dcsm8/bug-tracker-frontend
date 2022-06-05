@@ -53,7 +53,8 @@ import {
   AvatarSingleValue,
 } from '@components/avatar-option/avatar-option';
 import { useDebounce } from '@store/use-debounce';
-import { AddComment } from './add-comment/add-comment';
+import { AddComment } from '@components/comment/add-comment/add-comment';
+import { ViewComments } from '@components/comment/view-comments/view-comments';
 
 type ViewTaskProps = {
   isOpen: boolean;
@@ -150,6 +151,8 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
               selectAllOnFocus={false}
               onSubmit={(nextValue: string) => onSubmit('title', nextValue)}
               w='full'
+              fontSize='2xl'
+              fontWeight='bold'
             >
               <Tooltip label='Click to edit'>
                 <EditablePreview
@@ -198,15 +201,16 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
               <FormLabel htmlFor='description' mt={10}>
                 Activity
               </FormLabel>
-              <Tabs variant='soft-rounded' colorScheme='green' size='sm'>
+              <Tabs variant='soft-rounded' colorScheme='gray' size='sm'>
                 <TabList>
-                  <Tab>Comments</Tab>
-                  <Tab>History</Tab>
+                  <Tab fontWeight='semibold'>Comments</Tab>
+                  <Tab fontWeight='semibold'>History</Tab>
                 </TabList>
 
                 <TabPanels>
                   <TabPanel>
                     <AddComment />
+                    <ViewComments comments={selectedTask.comments} />
                   </TabPanel>
                   <TabPanel>
                     <p>History here</p>
