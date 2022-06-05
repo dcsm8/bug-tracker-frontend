@@ -13,6 +13,7 @@ export interface Task {
   description?: string;
   area?: Area;
   assignedTo?: User;
+  comments: Comment[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -55,21 +56,6 @@ export enum PriorityType {
   MID = 'mid',
   HIGH = 'high',
 }
-
-export const PriorityStyles = {
-  [PriorityType.LOW]: {
-    bg: '#EAEEF4',
-    textColor: '#93A3BA',
-  },
-  [PriorityType.MID]: {
-    bg: '#FCEFDE',
-    textColor: '#E99D2D',
-  },
-  [PriorityType.HIGH]: {
-    bg: '#FCE3DE',
-    textColor: '#E94E2F',
-  },
-};
 
 export enum StatusType {
   BACKLOG = 'backlog',

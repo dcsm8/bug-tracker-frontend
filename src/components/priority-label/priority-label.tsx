@@ -1,10 +1,25 @@
 import { Box, Text } from '@chakra-ui/react';
 import { ShowIf } from '@components/show-if/show-if';
-import { PriorityType, PriorityStyles, Task } from '@interfaces/task-interface';
+import { PriorityType, Task } from '@interfaces/task-interface';
 import React from 'react';
 
 type PriorityLabelProps = {
   task: Task;
+};
+
+export const PriorityStyles = {
+  [PriorityType.LOW]: {
+    bg: '#EAEEF4',
+    textColor: '#93A3BA',
+  },
+  [PriorityType.MID]: {
+    bg: '#FCEFDE',
+    textColor: '#E99D2D',
+  },
+  [PriorityType.HIGH]: {
+    bg: '#FCE3DE',
+    textColor: '#E94E2F',
+  },
 };
 
 export const PriorityLabel = ({ task }: PriorityLabelProps) => (
