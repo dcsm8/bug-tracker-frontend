@@ -22,7 +22,7 @@ export const AddComment = () => {
 
   return (
     <Flex>
-      <Box mr={3}>
+      <Box mr={5} mt={3}>
         <Avatar size={'sm'} name={user?.fullName} />
       </Box>
       <Box w='full'>
