@@ -110,11 +110,13 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
   });
 
   const onSubmit = async (prop: keyof Task, value) => {
-    const updatedTask: Partial<Task> = {
-      id: selectedTask!.id,
-      [prop]: value,
-    };
-    await updateTask(updatedTask);
+    if (selectedTask) {
+      const updatedTask: Partial<Task> = {
+        id: selectedTask.id,
+        [prop]: value,
+      };
+      await updateTask(updatedTask);
+    }
   };
 
   const onChangeSelect = async (
