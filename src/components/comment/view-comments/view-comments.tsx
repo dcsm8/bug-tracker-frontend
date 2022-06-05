@@ -37,7 +37,7 @@ type ViewCommentsProps = {
 
 export const ViewComments = ({ comments }: ViewCommentsProps) => {
   const commentList = comments.map((comment) => (
-    <ViewComment comment={comment} />
+    <ViewComment comment={comment} key={comment.id} />
   ));
 
   return <Box>{commentList}</Box>;
