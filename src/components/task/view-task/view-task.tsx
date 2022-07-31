@@ -137,11 +137,6 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
   const { data: taskComments, isLoading: isLoadingComments } = useQuery(
     ['tasks', selectedTask?.id],
     () => findOne(selectedTask!.id),
-    {
-      onSuccess: (data) => {
-        console.log(data);
-      },
-    },
   );
 
   if (!selectedTask) return null;
