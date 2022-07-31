@@ -51,7 +51,9 @@ export const AddComment = () => {
         user: user.keyId,
       };
 
-      await createComment(createCommentDto);
+      if (commentEditorState.getCurrentContent().hasText()) {
+        await createComment(createCommentDto);
+      }
     }
   };
 
