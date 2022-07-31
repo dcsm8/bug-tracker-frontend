@@ -32,6 +32,7 @@ import {
   FiBell,
   FiChevronDown,
   FiPlus,
+  FiBriefcase,
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import { useHistory } from 'react-router-dom';
@@ -45,11 +46,10 @@ interface LinkItemProps {
   to: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome, to: '/dashboard' },
-  { name: 'Trending', icon: FiTrendingUp, to: '/dashboard/user' },
-  { name: 'Explore', icon: FiCompass, to: '/dashboard' },
-  { name: 'Favourites', icon: FiStar, to: '/dashboard' },
-  { name: 'Settings', icon: FiSettings, to: '/dashboard' },
+  { name: 'Overview', icon: FiHome, to: '/dashboard' },
+  { name: 'Workspaces', icon: FiBriefcase, to: '/dashboard' },
+  { name: 'Notifications', icon: FiBell, to: '/dashboard' },
+  { name: 'Settings', icon: FiSettings, to: '/dashboard/user' },
 ];
 
 export const SidebarWithHeader = ({ children }: { children: JSX.Element }) => {
@@ -88,7 +88,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
     <Box
       transition='3s ease'
-      bg={useColorModeValue('#F5F5F5', 'gray.900')}
+      bg='#F6F6F6'
       borderRight='1px'
       borderRightColor={useColorModeValue('gray.200', 'gray.700')}
       w={{ base: 'full', md: 60 }}
@@ -102,6 +102,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           fontSize='2xl'
           fontFamily='monospace'
           fontWeight='bold'
+          textColor='#454545'
           marginLeft={2}
         >
           Bug Tracker
@@ -127,13 +128,14 @@ const NavItem = ({ icon, children, link, ...rest }: NavItemProps) => {
     <NavLink to={link.to}>
       <Flex
         align='center'
-        p='4'
+        p='3'
         mx='4'
         borderRadius='lg'
         role='group'
         cursor='pointer'
+        fontWeight='semibold'
         _hover={{
-          bg: 'cyan.400',
+          bg: '#2B65E8',
           color: 'white',
         }}
         {...rest}
@@ -196,18 +198,17 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         <Button
           leftIcon={<Icon as={FiPlus} color='white' />}
           colorScheme='blue'
+          bg='#2C65EA'
+          _hover={{
+            background: '#1652de',
+          }}
           variant='solid'
           onClick={OnOpenCreateTask}
+          mr={2}
         >
           Create Task
         </Button>
         <CreateTask isOpen={isOpen} onClose={onClose} />
-        <IconButton
-          size='lg'
-          variant='ghost'
-          aria-label='open menu'
-          icon={<FiBell />}
-        />
         <Flex alignItems={'center'}>
           <Menu>
             <MenuButton
