@@ -1,4 +1,4 @@
-import { Flex, HStack, Avatar, Text } from '@chakra-ui/react';
+import { Flex, HStack, Avatar, Text, Box } from '@chakra-ui/react';
 import { PriorityLabel } from '@components/priority-label/priority-label';
 import { ShowIf } from '@components/show-if/show-if';
 import { Task } from '@interfaces/task-interface';
@@ -29,9 +29,19 @@ export const CardTask = ({ task, openTask, props }: cardTaskProps) => (
       minW='270px'
       onClick={() => openTask(task)}
     >
-      <Text fontSize='sm' fontWeight='semibold' color='gray.500'>
-        {task.area?.name}
-      </Text>
+      <Box
+        mt={2}
+        borderRadius={10}
+        bg={task.area?.color}
+        px={2}
+        py={1.3}
+        mb={task.area ? 2 : 0}
+      >
+        <Text fontSize='sm' fontWeight='semibold' color='white'>
+          {task.area?.name}
+        </Text>
+      </Box>
+
       <Text fontSize='md' fontWeight='bold'>
         {task.title}
       </Text>
