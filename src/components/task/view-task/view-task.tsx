@@ -27,10 +27,11 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Spinner,
 } from '@chakra-ui/react';
 import { FiMoreHorizontal, FiTrash } from 'react-icons/fi';
 import { Task } from '@interfaces/task-interface';
-import { update } from '@services/tasks-service';
+import { findOne, update } from '@services/tasks-service';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import draftToHtml from 'draftjs-to-html';
 import { EditorState, convertToRaw } from 'draft-js';
@@ -55,6 +56,7 @@ import {
 import { useDebounce } from '@store/use-debounce';
 import { AddComment } from '@components/comment/add-comment/add-comment';
 import { ViewComments } from '@components/comment/view-comments/view-comments';
+import { ShowIf } from '@components/show-if/show-if';
 
 type ViewTaskProps = {
   isOpen: boolean;
@@ -131,6 +133,16 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
     }
     onSubmit(prop, value);
   };
+
+  const { data: taskComments, isLoading: isLoadingComments } = useQuery(
+    ['tasks', selectedTask?.id],
+    () => findOne(selectedTask!.id),
+    {
+      onSuccess: (data) => {
+        console.log(data);
+      },
+    },
+  );
 
   if (!selectedTask) return null;
 
@@ -212,7 +224,10 @@ export const ViewTask = ({ isOpen, onClose, onRemoveCard }: ViewTaskProps) => {
                 <TabPanels>
                   <TabPanel>
                     <AddComment />
-                    <ViewComments comments={selectedTask.comments} />
+                    <ShowIf condition={isLoadingComments}>
+                      <Spinner />
+                    </ShowIf>
+                    <ViewComments task={taskComments} />
                   </TabPanel>
                   <TabPanel>
                     <p>History here</p>

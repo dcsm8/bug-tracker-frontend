@@ -1,5 +1,6 @@
 import { Avatar, Box, Divider, Flex, HStack, Text } from '@chakra-ui/react';
 import { Comment } from '@interfaces/comment.interface';
+import { Task } from '@interfaces/task-interface';
 import React from 'react';
 
 type ViewCommentProps = {
@@ -32,11 +33,15 @@ const ViewComment = ({ comment }: ViewCommentProps) => {
 };
 
 type ViewCommentsProps = {
-  comments: Comment[];
+  task?: Task;
 };
 
-export const ViewComments = ({ comments }: ViewCommentsProps) => {
-  const commentList = comments.map((comment) => (
+export const ViewComments = ({ task }: ViewCommentsProps) => {
+  if (!task) {
+    return null;
+  }
+
+  const commentList = task.comments.map((comment) => (
     <ViewComment comment={comment} key={comment.id} />
   ));
 
