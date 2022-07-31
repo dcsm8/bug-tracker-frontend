@@ -33,7 +33,7 @@ export const AddComment = () => {
 
   const { mutateAsync: createComment, isLoading } = useMutation(create, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['tasks']);
+      queryClient.invalidateQueries(['tasks', selectedTask?.id]);
       resetForm();
     },
   });
