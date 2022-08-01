@@ -84,7 +84,7 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
       category: data.category?.value,
       reproducible: data.reproducible?.value,
       assignedToId: data.assignedToId && parseInt(data.assignedToId.value),
-      areaId: data.assignedToId && parseInt(data.assignedToId.value),
+      areaId: data.areaId && parseInt(data.areaId.value),
       description: data.description,
     };
 
@@ -135,7 +135,7 @@ export const CreateTask = ({ isOpen, onClose }: CreateTaskProps) => {
                       <Select
                         id='area'
                         options={areaOptions}
-                        onChange={(e) => field.onChange(e!.value)}
+                        onChange={(e) => field.onChange(e)}
                         isClearable
                       />
                     );
