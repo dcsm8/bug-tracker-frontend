@@ -14,6 +14,8 @@ import { Task } from '@interfaces/task-interface';
 import { remove } from '@services/comments-service';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
+import dayjs from 'dayjs';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 
 type ViewCommentProps = {
   comment: Comment;
@@ -27,6 +29,8 @@ const ViewComment = ({ comment }: ViewCommentProps) => {
   } = useDisclosure();
 
   const queryClient = useQueryClient();
+
+  dayjs.extend(LocalizedFormat);
 
   const { mutateAsync: deleteComment } = useMutation(remove, {
     onSuccess: () => {
@@ -47,7 +51,7 @@ const ViewComment = ({ comment }: ViewCommentProps) => {
               &#x2022;
             </Text>
             <Text fontWeight='semibold' textColor='gray.600'>
-              {comment.createdAt}
+              {dayjs(comment.createdAt).format('LLL')}
             </Text>
           </HStack>
           <div dangerouslySetInnerHTML={{ __html: comment.text }} />
