@@ -29,18 +29,20 @@ export const CardTask = ({ task, openTask, props }: cardTaskProps) => (
       minW='270px'
       onClick={() => openTask(task)}
     >
-      <Box
-        mt={2}
-        borderRadius={10}
-        bg={task.area?.color}
-        px={2}
-        py={1.3}
-        mb={task.area ? 2 : 0}
-      >
-        <Text fontSize='sm' fontWeight='semibold' color='white'>
-          {task.area?.name}
-        </Text>
-      </Box>
+      <ShowIf condition={task.area !== null}>
+        <Box
+          mt={2}
+          borderRadius={10}
+          bg={task.area?.color}
+          px={2}
+          py={1.3}
+          mb={2}
+        >
+          <Text fontSize='sm' fontWeight='semibold' color='white'>
+            {task.area?.name}
+          </Text>
+        </Box>
+      </ShowIf>
 
       <Text fontSize='md' fontWeight='bold'>
         {task.title}
